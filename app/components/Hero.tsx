@@ -18,7 +18,7 @@ export default function Hero() {
       <div className="absolute inset-0 bg-gradient-to-b from-blue-900/20 via-gray-900 to-gray-900" />
       
       {/* Main Content */}
-      <div className="relative z-10 max-w-7xl mx-auto px-6 py-24 sm:py-32 lg:px-8 flex flex-col lg:flex-row items-center gap-12 mt-16">
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 py-16 sm:py-24 lg:py-32 lg:px-8 flex flex-col lg:flex-row items-center gap-8 lg:gap-12 mt-16 sm:mt-20 lg:mt-16">
         {/* Text Content */}
         <motion.div 
           className="flex-1 text-center lg:text-left"
@@ -35,18 +35,18 @@ export default function Hero() {
               <div className="absolute -inset-x-2 -inset-y-4">
                 <div className="mx-auto h-full w-full rotate-180 bg-gradient-to-r from-blue-500/20 via-purple-500/20 to-pink-500/20 blur-3xl" />
               </div>
-              <h1 className="relative text-4xl font-bold tracking-tight sm:text-6xl bg-clip-text text-transparent bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500">
+              <h1 className="relative text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500">
                 Innovating Tomorrow&apos;s Technology Today
               </h1>
             </div>
-            <p className="mt-6 text-lg leading-8 text-gray-300">
+            <p className="mt-4 sm:mt-6 text-base sm:text-lg leading-6 sm:leading-8 text-gray-300 max-w-2xl mx-auto lg:mx-0">
               Pioneering AI solutions, cutting-edge software development, and revolutionary hardware innovations. 
               We transform ideas into reality.
             </p>
           </motion.div>
 
           <motion.div 
-            className="mt-10 flex flex-wrap gap-6 justify-center lg:justify-start"
+            className="mt-8 sm:mt-10 flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center lg:justify-start items-center"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4, duration: 0.8 }}
@@ -54,7 +54,7 @@ export default function Hero() {
             <GlowingBorder>
               <Link 
                 href="#contact"
-                className="rounded-md px-6 py-3 text-lg font-semibold text-white shadow-sm hover:bg-gray-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+                className="rounded-md px-5 sm:px-6 py-2.5 sm:py-3 text-base sm:text-lg font-semibold text-white shadow-sm hover:bg-gray-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white w-full sm:w-auto text-center"
               >
                 Get Started
               </Link>
@@ -62,7 +62,7 @@ export default function Hero() {
             
             <Link 
               href="#solutions"
-              className="text-lg font-semibold leading-6 text-white hover:text-blue-400 transition-colors duration-200 flex items-center"
+              className="text-base sm:text-lg font-semibold leading-6 text-white hover:text-blue-400 transition-colors duration-200 flex items-center justify-center w-full sm:w-auto"
             >
               Explore Solutions <span aria-hidden="true" className="ml-2">→</span>
             </Link>
@@ -71,15 +71,15 @@ export default function Hero() {
 
         {/* Tech Sphere Animation */}
         <motion.div 
-          className="flex-1 relative"
+          className="flex-1 relative w-full lg:w-auto"
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.2, duration: 0.8 }}
         >
-          <div className="relative w-full max-w-lg mx-auto">
-            {/* Animated rings */}
+          <div className="relative w-full max-w-sm sm:max-w-md lg:max-w-lg mx-auto">
+            {/* Animated rings - adjusted for mobile */}
             <motion.div
-              className="absolute top-0 -left-4 w-72 h-72 bg-purple-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob"
+              className="absolute top-0 -left-2 sm:-left-4 w-48 h-48 sm:w-64 sm:h-64 lg:w-72 lg:h-72 bg-purple-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob"
               animate={{
                 scale: [1, 1.2, 1],
                 rotate: [0, 90, 0],
@@ -91,7 +91,7 @@ export default function Hero() {
               }}
             />
             <motion.div
-              className="absolute -bottom-8 right-4 w-72 h-72 bg-blue-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob"
+              className="absolute -bottom-4 sm:-bottom-8 right-2 sm:right-4 w-48 h-48 sm:w-64 sm:h-64 lg:w-72 lg:h-72 bg-blue-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob"
               animate={{
                 scale: [1.2, 1, 1.2],
                 rotate: [90, 0, 90],
@@ -115,13 +115,13 @@ export default function Hero() {
 
       {/* Scroll Indicator */}
       <motion.div 
-        className="absolute bottom-8 left-1/2 transform -translate-x-1/2"
+        className="absolute bottom-4 sm:bottom-8 left-1/2 transform -translate-x-1/2"
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 1, duration: 0.8 }}
       >
         <motion.div
-          className="w-6 h-10 border-2 border-white/20 rounded-full p-1"
+          className="w-5 h-8 sm:w-6 sm:h-10 border-2 border-white/20 rounded-full p-1"
           animate={{
             y: [0, 8, 0],
           }}
@@ -131,7 +131,7 @@ export default function Hero() {
             ease: "easeInOut",
           }}
         >
-          <div className="w-1 h-3 bg-white/50 rounded-full mx-auto" />
+          <div className="w-1 h-2 sm:h-3 bg-white/50 rounded-full mx-auto" />
         </motion.div>
       </motion.div>
     </section>
