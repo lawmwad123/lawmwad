@@ -31,9 +31,14 @@ export default function Hero() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2, duration: 0.8 }}
           >
-            <h1 className="text-4xl font-bold tracking-tight text-white sm:text-6xl bg-clip-text text-transparent bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500">
-              Innovating Tomorrow&apos;s Technology Today
-            </h1>
+            <div className="relative">
+              <div className="absolute -inset-x-2 -inset-y-4">
+                <div className="mx-auto h-full w-full rotate-180 bg-gradient-to-r from-blue-500/20 via-purple-500/20 to-pink-500/20 blur-3xl" />
+              </div>
+              <h1 className="relative text-4xl font-bold tracking-tight sm:text-6xl bg-clip-text text-transparent bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500">
+                Innovating Tomorrow&apos;s Technology Today
+              </h1>
+            </div>
             <p className="mt-6 text-lg leading-8 text-gray-300">
               Pioneering AI solutions, cutting-edge software development, and revolutionary hardware innovations. 
               We transform ideas into reality.
