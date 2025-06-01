@@ -11,15 +11,15 @@ import GlowingBorder from './components/GlowingBorder';
 import Header from './components/Header';
 
 const features = [
-  {
-    name: 'School Management',
-    description: 'Next-gen school administration system powered by AI for efficient management of students, staff, and resources. Features smart analytics and predictive insights.',
-    icon: '🎓',
-    bgColor: 'bg-blue-500',
-    textColor: 'text-blue-400',
-    borderColor: 'border-blue-500/20',
-    hoverBg: 'bg-blue-500/20',
-  },
+  // {
+  //   name: 'School Management',
+  //   description: 'Next-gen school administration system powered by AI for efficient management of students, staff, and resources. Features smart analytics and predictive insights.',
+  //   icon: '🎓',
+  //   bgColor: 'bg-blue-500',
+  //   textColor: 'text-blue-400',
+  //   borderColor: 'border-blue-500/20',
+  //   hoverBg: 'bg-blue-500/20',
+  // },
   {
     name: 'Hospital Management',
     description: 'AI-driven healthcare management platform with real-time patient monitoring, automated scheduling, and intelligent resource allocation.',
