@@ -101,12 +101,17 @@ export default function Home() {
               viewport={{ once: true }}
             >
               <GlowingBorder className="inline-block mb-8">
-                <h2 className="text-base font-semibold leading-7 text-blue-400">
-                  Advanced Solutions
-                </h2>
-                <p className="mt-2 text-3xl font-bold tracking-tight text-white sm:text-4xl bg-clip-text text-transparent bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500">
-                  Everything you need to digitize your business
-                </p>
+                <div className="relative">
+                  <div className="absolute -inset-x-2 -inset-y-4">
+                    <div className="mx-auto h-full w-full rotate-180 bg-gradient-to-r from-blue-500/20 via-purple-500/20 to-pink-500/20 blur-3xl" />
+                  </div>
+                  <h2 className="text-base font-semibold leading-7 text-blue-400">
+                    Advanced Solutions
+                  </h2>
+                  <p className="mt-2 relative text-3xl font-bold tracking-tight sm:text-4xl bg-clip-text text-transparent bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500">
+                    Everything you need to digitize your business
+                  </p>
+                </div>
               </GlowingBorder>
               <p className="mt-6 text-lg leading-8 text-gray-300">
                 Our comprehensive suite of solutions helps businesses transform their operations with cutting-edge technology.
@@ -133,10 +138,15 @@ export default function Home() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
             >
-              <h2 className="text-base font-semibold leading-7 text-blue-400">Our Solutions</h2>
-              <p className="mt-2 text-3xl font-bold tracking-tight text-white sm:text-4xl">
-                Transforming Industries with Technology
-              </p>
+              <div className="relative">
+                <div className="absolute -inset-x-2 -inset-y-4">
+                  <div className="mx-auto h-full w-full rotate-180 bg-gradient-to-r from-blue-500/20 via-purple-500/20 to-pink-500/20 blur-3xl" />
+                </div>
+                <h2 className="text-base font-semibold leading-7 text-blue-400">Our Solutions</h2>
+                <p className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl bg-clip-text text-transparent bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500">
+                  Transforming Industries with Technology
+                </p>
+              </div>
             </motion.div>
           </div>
           <div className="mx-auto mt-16 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-20 lg:mx-0 lg:max-w-none lg:grid-cols-3">

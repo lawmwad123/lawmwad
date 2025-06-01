@@ -41,12 +41,17 @@ export default function TechStats() {
               onAnimationComplete={() => setHasAnimated(true)}
             >
               <GlowingBorder className="inline-block mb-8">
-                <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">
-                  Driving Innovation Through Technology
-                </h2>
-                <p className="mt-4 text-lg leading-8 text-gray-300">
-                  Our impact in numbers showcases our commitment to technological excellence
-                </p>
+                <div className="relative">
+                  <div className="absolute -inset-x-2 -inset-y-4">
+                    <div className="mx-auto h-full w-full rotate-180 bg-gradient-to-r from-blue-500/20 via-purple-500/20 to-pink-500/20 blur-3xl" />
+                  </div>
+                  <h2 className="relative text-3xl font-bold tracking-tight sm:text-4xl bg-clip-text text-transparent bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500">
+                    Driving Innovation Through Technology
+                  </h2>
+                  <p className="mt-4 text-lg leading-8 text-gray-300">
+                    Our impact in numbers showcases our commitment to technological excellence
+                  </p>
+                </div>
               </GlowingBorder>
             </motion.div>
           </div>
