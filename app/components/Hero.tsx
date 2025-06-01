@@ -71,35 +71,42 @@ export default function Hero() {
 
         {/* Tech Sphere Animation */}
         <motion.div 
-          className="flex-1 relative w-full lg:w-auto"
+          className="flex-1 relative w-full lg:w-auto hidden lg:block"
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.2, duration: 0.8 }}
         >
           <div className="relative w-full max-w-sm sm:max-w-md lg:max-w-lg mx-auto">
-            {/* Animated rings - adjusted for mobile */}
+            {/* Single animated ring for perfect circular appearance */}
             <motion.div
-              className="absolute top-0 -left-2 sm:-left-4 w-48 h-48 sm:w-64 sm:h-64 lg:w-72 lg:h-72 bg-purple-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob"
+              className="absolute inset-0 rounded-full"
+              style={{
+                background: 'conic-gradient(from 0deg, transparent, rgba(139, 92, 246, 0.3), transparent, rgba(59, 130, 246, 0.3), transparent)',
+                filter: 'blur(20px)',
+              }}
               animate={{
-                scale: [1, 1.2, 1],
-                rotate: [0, 90, 0],
+                rotate: [0, 360],
               }}
               transition={{
-                duration: 8,
+                duration: 20,
                 repeat: Infinity,
                 ease: "linear"
               }}
             />
+            
+            {/* Subtle outer glow */}
             <motion.div
-              className="absolute -bottom-4 sm:-bottom-8 right-2 sm:right-4 w-48 h-48 sm:w-64 sm:h-64 lg:w-72 lg:h-72 bg-blue-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob"
+              className="absolute inset-0 rounded-full border border-blue-500/20"
+              style={{
+                boxShadow: '0 0 60px rgba(59, 130, 246, 0.2), inset 0 0 60px rgba(139, 92, 246, 0.1)',
+              }}
               animate={{
-                scale: [1.2, 1, 1.2],
-                rotate: [90, 0, 90],
+                scale: [1, 1.05, 1],
               }}
               transition={{
-                duration: 8,
+                duration: 4,
                 repeat: Infinity,
-                ease: "linear"
+                ease: "easeInOut"
               }}
             />
             
