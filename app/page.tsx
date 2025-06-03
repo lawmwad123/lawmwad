@@ -11,15 +11,15 @@ import GlowingBorder from './components/GlowingBorder';
 import Header from './components/Header';
 
 const features = [
-  // {
-  //   name: 'School Management',
-  //   description: 'Next-gen school administration system powered by AI for efficient management of students, staff, and resources. Features smart analytics and predictive insights.',
-  //   icon: '🎓',
-  //   bgColor: 'bg-blue-500',
-  //   textColor: 'text-blue-400',
-  //   borderColor: 'border-blue-500/20',
-  //   hoverBg: 'bg-blue-500/20',
-  // },
+  {
+    name: 'School Management',
+    description: 'Next-gen school administration system powered by AI for efficient management of students, staff, and resources. Features smart analytics and predictive insights.',
+    icon: '🎓',
+    bgColor: 'bg-blue-500',
+    textColor: 'text-blue-400',
+    borderColor: 'border-blue-500/20',
+    hoverBg: 'bg-blue-500/20',
+  },
   {
     name: 'Hospital Management',
     description: 'AI-driven healthcare management platform with real-time patient monitoring, automated scheduling, and intelligent resource allocation.',
@@ -223,7 +223,7 @@ export default function Home() {
               >
                 <div className="absolute -inset-1 rounded-lg bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 opacity-50 blur transition duration-200 group-hover:opacity-75" />
                 <a
-                  href="mailto:contact@lawmwad.com"
+                  href="mailto:lawmwad@gmail.com"
                   className="relative flex flex-col items-center justify-center gap-4 rounded-lg bg-gray-900 p-6 transition duration-200 hover:bg-gray-800"
                 >
                   <motion.div
@@ -235,7 +235,7 @@ export default function Home() {
                   </motion.div>
                   <div>
                     <h3 className="text-lg font-semibold text-white">Email Us</h3>
-                    <p className="mt-1 text-sm text-gray-300">contact@lawmwad.com</p>
+                    <p className="mt-1 text-sm text-gray-300">lawmwad@gmail.com</p>
                   </div>
                 </a>
               </motion.div>
@@ -248,7 +248,7 @@ export default function Home() {
               >
                 <div className="absolute -inset-1 rounded-lg bg-gradient-to-r from-pink-600 via-purple-600 to-blue-600 opacity-50 blur transition duration-200 group-hover:opacity-75" />
                 <a
-                  href="#schedule"
+                  href="https://wa.me/256745033924"
                   className="relative flex flex-col items-center justify-center gap-4 rounded-lg bg-gray-900 p-6 transition duration-200 hover:bg-gray-800"
                 >
                   <motion.div
@@ -260,7 +260,7 @@ export default function Home() {
                   </motion.div>
                   <div>
                     <h3 className="text-lg font-semibold text-white">Schedule a Meeting</h3>
-                    <p className="mt-1 text-sm text-gray-300">Book a consultation</p>
+                    <p className="mt-1 text-sm text-gray-300">+256 745 033924</p>
                   </div>
                 </a>
               </motion.div>
