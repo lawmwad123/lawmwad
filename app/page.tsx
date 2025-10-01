@@ -214,7 +214,7 @@ export default function Home() {
             </motion.div>
 
             {/* Contact Options */}
-            <div className="mt-16 grid grid-cols-1 gap-8 sm:grid-cols-2">
+            <div className="mt-16 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
               {/* Email Contact */}
               <motion.div
                 whileHover={{ scale: 1.05 }}
@@ -240,7 +240,34 @@ export default function Home() {
                 </a>
               </motion.div>
 
-              {/* Schedule Meeting */}
+              {/* Primary WhatsApp */}
+              <motion.div
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="relative group"
+              >
+                <div className="absolute -inset-1 rounded-lg bg-gradient-to-r from-green-600 via-emerald-600 to-teal-600 opacity-50 blur transition duration-200 group-hover:opacity-75" />
+                <a
+                  href="https://wa.me/256758951822"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="relative flex flex-col items-center justify-center gap-4 rounded-lg bg-gray-900 p-6 transition duration-200 hover:bg-gray-800"
+                >
+                  <motion.div
+                    animate={{ scale: [1, 1.1, 1] }}
+                    transition={{ duration: 2, repeat: Infinity }}
+                    className="text-3xl"
+                  >
+                    📱
+                  </motion.div>
+                  <div>
+                    <h3 className="text-lg font-semibold text-white">WhatsApp (Primary)</h3>
+                    <p className="mt-1 text-sm text-gray-300">+256 758 951 822</p>
+                  </div>
+                </a>
+              </motion.div>
+
+              {/* Secondary WhatsApp */}
               <motion.div
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
@@ -249,6 +276,8 @@ export default function Home() {
                 <div className="absolute -inset-1 rounded-lg bg-gradient-to-r from-pink-600 via-purple-600 to-blue-600 opacity-50 blur transition duration-200 group-hover:opacity-75" />
                 <a
                   href="https://wa.me/256745033924"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="relative flex flex-col items-center justify-center gap-4 rounded-lg bg-gray-900 p-6 transition duration-200 hover:bg-gray-800"
                 >
                   <motion.div
@@ -256,11 +285,11 @@ export default function Home() {
                     transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
                     className="text-3xl"
                   >
-                    🕒
+                    💬
                   </motion.div>
                   <div>
-                    <h3 className="text-lg font-semibold text-white">Schedule a Meeting</h3>
-                    <p className="mt-1 text-sm text-gray-300">+256 745 033924</p>
+                    <h3 className="text-lg font-semibold text-white">WhatsApp (Secondary)</h3>
+                    <p className="mt-1 text-sm text-gray-300">+256 745 033 924</p>
                   </div>
                 </a>
               </motion.div>

@@ -1,4 +1,10 @@
+# *
 User-agent: *
 Allow: /
 
-Sitemap: https://lawmwad.vercel.app/sitemap.xml 
+# Host
+Host: https://lawmwad.vercel.app
+
+# Sitemaps
+Sitemap: https://lawmwad.vercel.app/sitemap.xml
+Sitemap: https://lawmwad.vercel.app/server-sitemap.xml

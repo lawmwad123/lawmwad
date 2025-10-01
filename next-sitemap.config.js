@@ -1,0 +1,33 @@
+/** @type {import('next-sitemap').IConfig} */
+module.exports = {
+  siteUrl: 'https://lawmwad.vercel.app',
+  generateRobotsTxt: true,
+  generateIndexSitemap: false,
+  exclude: ['/server-sitemap.xml'],
+  robotsTxtOptions: {
+    additionalSitemaps: [
+      'https://lawmwad.vercel.app/server-sitemap.xml',
+    ],
+  },
+  transform: async (config, path) => {
+    // Custom priority and changefreq for different pages
+    const customConfig = {
+      loc: path,
+      changefreq: 'monthly',
+      priority: 0.7,
+      lastmod: new Date().toISOString(),
+    };
+
+    // Set higher priority for main pages
+    if (path === '/') {
+      customConfig.priority = 1.0;
+      customConfig.changefreq = 'weekly';
+    } else if (path.includes('#contact')) {
+      customConfig.priority = 0.9;
+    } else if (path.includes('#solutions') || path.includes('#features')) {
+      customConfig.priority = 0.8;
+    }
+
+    return customConfig;
+  },
+};
