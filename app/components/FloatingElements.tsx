@@ -1,6 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
+import { useEffect, useState } from 'react';
 import { Zap, Sparkles, Target, Lightbulb, Rocket, Battery, Smartphone, Laptop } from 'lucide-react';
 
 const techElements = [
@@ -27,15 +28,28 @@ const floatingAnimation = {
 };
 
 export default function FloatingElements() {
+  const [positions, setPositions] = useState<Array<{ left: number; top: number }>>([]);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+    // Generate deterministic positions per mount to avoid SSR/client mismatch
+    const generated = techElements.map(() => ({
+      left: Math.random() * 100,
+      top: Math.random() * 100,
+    }));
+    setPositions(generated);
+  }, []);
+
   return (
-    <div className="absolute inset-0 overflow-hidden pointer-events-none select-none">
-      {techElements.map((element, index) => (
+    <div className="absolute inset-0 overflow-hidden pointer-events-none select-none" suppressHydrationWarning>
+      {mounted && positions.length === techElements.length && techElements.map((element, index) => (
         <motion.div
           key={index}
           className={`absolute ${element.color} opacity-10`}
           style={{
-            left: `${Math.random() * 100}%`,
-            top: `${Math.random() * 100}%`,
+            left: `${positions[index].left}%`,
+            top: `${positions[index].top}%`,
           }}
           initial={{ opacity: 0, scale: 0 }}
           animate={{ 
@@ -53,4 +67,4 @@ export default function FloatingElements() {
       ))}
     </div>
   );
-} 
+}

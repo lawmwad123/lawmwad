@@ -12,11 +12,14 @@
   "dependencies": {
     "@headlessui/react": "^2.2.4",
     "@heroicons/react": "^2.2.0",
+    "@types/nodemailer": "^7.0.2",
     "aos": "^2.3.4",
     "framer-motion": "^12.15.0",
     "lucide-react": "^0.544.0",
     "next": "^15.3.3",
+    "next-auth": "^4.24.11",
     "next-sitemap": "^4.2.3",
+    "nodemailer": "^6.10.1",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-intersection-observer": "^9.16.0"
