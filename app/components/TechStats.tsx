@@ -2,15 +2,16 @@
 
 import { useEffect, useState } from 'react';
 import { motion, useInView } from 'framer-motion';
+import { Rocket, Bot, Star, Users } from 'lucide-react';
 import AnimatedCounter from './AnimatedCounter';
 import CircuitBackground from './CircuitBackground';
 import GlowingBorder from './GlowingBorder';
 
 const stats = [
-  { id: 1, name: 'Projects Delivered', value: '200+', icon: '🚀' },
-  { id: 2, name: 'AI Models Deployed', value: '50+', icon: '🤖' },
-  { id: 3, name: 'Client Satisfaction', value: '98%', icon: '⭐' },
-  { id: 4, name: 'Team Experts', value: '45+', icon: '👨‍💻' },
+  { id: 1, name: 'Projects Delivered', value: '200+', icon: Rocket, color: 'text-blue-400' },
+  { id: 2, name: 'AI Models Deployed', value: '50+', icon: Bot, color: 'text-purple-400' },
+  { id: 3, name: 'Client Satisfaction', value: '98%', icon: Star, color: 'text-yellow-400' },
+  { id: 4, name: 'Team Experts', value: '45+', icon: Users, color: 'text-green-400' },
 ];
 
 export default function TechStats() {
@@ -70,7 +71,9 @@ export default function TechStats() {
                     <div className="absolute -bottom-2 -right-2 w-4 h-4 border-b border-r border-blue-500/30"></div>
                     
                     <div className="space-y-4">
-                      <span className="text-4xl">{stat.icon}</span>
+                      <div className={`${stat.color} flex justify-center`}>
+                        <stat.icon className="h-10 w-10" />
+                      </div>
                       <dt className="text-sm font-semibold leading-6 text-gray-300">{stat.name}</dt>
                       <dd className="text-3xl font-semibold tracking-tight text-white">
                         {hasAnimated && (

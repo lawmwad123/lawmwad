@@ -4,6 +4,7 @@ import { useEffect } from 'react';
 import Image from 'next/image';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import AOS from 'aos';
+import { Mail, MessageCircle, Phone, Linkedin, Twitter, Github, GraduationCap, Building2, ShoppingCart, Wrench } from 'lucide-react';
 import TechStats from './components/TechStats';
 import Hero from './components/Hero';
 import FeatureCard from './components/FeatureCard';
@@ -229,9 +230,9 @@ export default function Home() {
                   <motion.div
                     animate={{ y: [0, -5, 0] }}
                     transition={{ duration: 2, repeat: Infinity }}
-                    className="text-3xl"
+                    className="text-blue-400"
                   >
-                    ✉️
+                    <Mail className="h-8 w-8" />
                   </motion.div>
                   <div>
                     <h3 className="text-lg font-semibold text-white">Email Us</h3>
@@ -256,9 +257,9 @@ export default function Home() {
                   <motion.div
                     animate={{ scale: [1, 1.1, 1] }}
                     transition={{ duration: 2, repeat: Infinity }}
-                    className="text-3xl"
+                    className="text-green-400"
                   >
-                    📱
+                    <Phone className="h-8 w-8" />
                   </motion.div>
                   <div>
                     <h3 className="text-lg font-semibold text-white">WhatsApp (Primary)</h3>
@@ -283,9 +284,9 @@ export default function Home() {
                   <motion.div
                     animate={{ rotate: [0, 360] }}
                     transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-                    className="text-3xl"
+                    className="text-purple-400"
                   >
-                    💬
+                    <MessageCircle className="h-8 w-8" />
                   </motion.div>
                   <div>
                     <h3 className="text-lg font-semibold text-white">WhatsApp (Secondary)</h3>
@@ -303,19 +304,19 @@ export default function Home() {
               className="mt-12 flex justify-center gap-6"
             >
               {[
-                { name: 'LinkedIn', href: '#', icon: '🔗' },
-                { name: 'Twitter', href: '#', icon: '🐦' },
-                { name: 'GitHub', href: '#', icon: '💻' },
+                { name: 'LinkedIn', href: '#', icon: Linkedin, color: 'text-blue-400' },
+                { name: 'Twitter', href: '#', icon: Twitter, color: 'text-sky-400' },
+                { name: 'GitHub', href: '#', icon: Github, color: 'text-gray-400' },
               ].map((social) => (
                 <motion.a
                   key={social.name}
                   href={social.href}
                   whileHover={{ scale: 1.2, y: -5 }}
                   whileTap={{ scale: 0.9 }}
-                  className="text-2xl"
+                  className={`${social.color} hover:opacity-80 transition-opacity`}
                   aria-label={social.name}
                 >
-                  {social.icon}
+                  <social.icon className="h-6 w-6" />
                 </motion.a>
               ))}
             </motion.div>

@@ -4,6 +4,13 @@ module.exports = {
   generateRobotsTxt: true,
   generateIndexSitemap: false,
   exclude: ['/server-sitemap.xml'],
+  additionalPaths: async (config) => [
+    await config.transform(config, '/#solutions'),
+    await config.transform(config, '/#features'),
+    await config.transform(config, '/#about'),
+    await config.transform(config, '/#contact'),
+    await config.transform(config, '/#stats'),
+  ],
   robotsTxtOptions: {
     additionalSitemaps: [
       'https://lawmwad.vercel.app/server-sitemap.xml',
@@ -26,6 +33,8 @@ module.exports = {
       customConfig.priority = 0.9;
     } else if (path.includes('#solutions') || path.includes('#features')) {
       customConfig.priority = 0.8;
+    } else if (path.includes('#stats')) {
+      customConfig.priority = 0.6;
     }
 
     return customConfig;
