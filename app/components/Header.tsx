@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
-import TechLogo from './TechLogo';
+import Image from 'next/image';
 
 const navigation = [
   { name: 'Solutions', href: '#solutions' },
@@ -60,8 +60,15 @@ export default function Header() {
         <nav className="mx-auto max-w-7xl px-6 lg:px-8" aria-label="Global">
           <div className="flex items-center justify-between py-6">
             <div className="flex lg:flex-1">
-              <Link href="/" className="-m-1.5 p-1.5">
-                <TechLogo />
+              <Link href="/" className="-m-1.5 p-1.5 flex items-center">
+                <Image
+                  src="/company_logo.png"
+                  alt="Lawmwad Technologies logo"
+                  width={101}
+                  height={91}
+                  className="h-8 w-auto rounded-sm shadow-sm ring-1 ring-white/10"
+                  priority
+                />
               </Link>
             </div>
 

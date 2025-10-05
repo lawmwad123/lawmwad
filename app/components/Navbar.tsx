@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { Disclosure } from '@headlessui/react';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 
@@ -22,8 +23,14 @@ export default function Navbar() {
             <div className="flex h-16 justify-between">
               <div className="flex">
                 <Link href="/" className="flex flex-shrink-0 items-center">
-                  <span className="text-2xl font-bold text-blue-600">Lawmwad</span>
-                  <span className="text-2xl font-bold text-gray-800">Tech</span>
+                  <Image
+                    src="/company_logo.png"
+                    alt="Lawmwad Technologies logo"
+                    width={101}
+                    height={91}
+                    className="h-8 w-auto"
+                    priority
+                  />
                 </Link>
               </div>
               <div className="hidden sm:ml-6 sm:flex sm:space-x-8">
