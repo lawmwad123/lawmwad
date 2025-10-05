@@ -304,7 +304,7 @@ export default function Home() {
               className="mt-12 flex justify-center gap-6"
             >
               {[
-                { name: 'LinkedIn', href: '#', icon: Linkedin, color: 'text-blue-400' },
+                { name: 'LinkedIn', href: 'https://www.linkedin.com/company/lawmwad-technologies/ ', icon: Linkedin, color: 'text-blue-400' },
                 { name: 'Twitter', href: '#', icon: Twitter, color: 'text-sky-400' },
                 { name: 'GitHub', href: '#', icon: Github, color: 'text-gray-400' },
               ].map((social) => (
