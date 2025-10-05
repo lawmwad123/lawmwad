@@ -34,7 +34,7 @@ const footerNavigation = {
       ),
     },
     {
-      name: 'Twitter',
+      name: 'X',
       href: '#',
       icon: (props: any) => (
         <svg fill="currentColor" viewBox="0 0 24 24" {...props}>
