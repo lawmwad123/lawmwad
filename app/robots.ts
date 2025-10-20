@@ -6,6 +6,6 @@ export default function robots(): MetadataRoute.Robots {
       userAgent: '*',
       allow: '/',
     },
-    sitemap: 'https://lawmwad.vercel.app/sitemap.xml',
+    sitemap: 'https://lawmwad.com/sitemap.xml',
   }
 }

@@ -1,6 +1,6 @@
 /** @type {import('next-sitemap').IConfig} */
 module.exports = {
-  siteUrl: 'https://lawmwad.vercel.app',
+  siteUrl: 'https://lawmwad.com',
   generateRobotsTxt: true,
   generateIndexSitemap: false,
   exclude: ['/server-sitemap.xml'],
@@ -13,7 +13,7 @@ module.exports = {
   ],
   robotsTxtOptions: {
     additionalSitemaps: [
-      'https://lawmwad.vercel.app/server-sitemap.xml',
+      'https://lawmwad.com/server-sitemap.xml',
     ],
   },
   transform: async (config, path) => {

@@ -21,14 +21,14 @@ export const metadata: Metadata = {
     address: false,
     telephone: false,
   },
-  metadataBase: new URL('https://lawmwad.vercel.app'),
+  metadataBase: new URL('https://lawmwad.com'),
   alternates: {
     canonical: '/',
   },
   openGraph: {
     title: "Lawmwad Technologies & Industries",
     description: "Leading provider of AI-driven software and hardware solutions for businesses, schools, hospitals, and industries.",
-    url: 'https://lawmwad.vercel.app',
+    url: 'https://lawmwad.com',
     siteName: 'Lawmwad Technologies',
     locale: 'en_US',
     type: 'website',
