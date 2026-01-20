@@ -12,8 +12,10 @@
   "dependencies": {
     "@headlessui/react": "^2.2.4",
     "@heroicons/react": "^2.2.0",
+    "@tailwindcss/typography": "^0.5.19",
     "@types/nodemailer": "^7.0.2",
     "aos": "^2.3.4",
+    "clsx": "^2.1.1",
     "framer-motion": "^12.15.0",
     "lucide-react": "^0.544.0",
     "next": "^15.3.3",
@@ -22,7 +24,8 @@
     "nodemailer": "^6.10.1",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
-    "react-intersection-observer": "^9.16.0"
+    "react-intersection-observer": "^9.16.0",
+    "tailwind-merge": "^3.4.0"
   },
   "devDependencies": {
     "@types/aos": "^3.0.7",

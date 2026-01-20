@@ -4,194 +4,190 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
 import Image from 'next/image';
+import { usePathname } from 'next/navigation';
+import { Menu, X, ChevronRight } from 'lucide-react';
+import { Button } from './ui/Button';
 
 const navigation = [
-  { name: 'Solutions', href: '#solutions' },
-  { name: 'Features', href: '#features' },
-  { name: 'About', href: '#about' },
-  { name: 'Contact', href: '#contact' },
+  { name: 'Home', href: '/' },
+  { name: 'Services', href: '/services' },
+  { name: 'Projects', href: '/projects' },
+  { name: 'About', href: '/about' },
+  { name: 'Blog', href: '/blog' },
+  { name: 'Contact', href: '/contact' },
 ];
 
-const MIN_SCROLL = 3; // Minimum scroll position
-
 export default function Header() {
-  const [isScrolled, setIsScrolled] = useState(true);
+  const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const pathname = usePathname();
 
   useEffect(() => {
-    // Initial scroll to ensure consistent header state
-    window.scrollTo(0, MIN_SCROLL);
-    
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 0);
-      
-      // Prevent scrolling above MIN_SCROLL
-      if (window.scrollY < MIN_SCROLL) {
-        window.scrollTo(0, MIN_SCROLL);
-      }
+      setIsScrolled(window.scrollY > 20);
     };
 
-    // Handle wheel events to prevent elastic scrolling on some browsers/devices
-    const handleWheel = (e: WheelEvent) => {
-      if (window.scrollY <= MIN_SCROLL && e.deltaY < 0) {
-        e.preventDefault();
-        window.scrollTo(0, MIN_SCROLL);
-      }
-    };
-    
-    window.addEventListener('scroll', handleScroll, { passive: false });
-    window.addEventListener('wheel', handleWheel, { passive: false });
-    
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-      window.removeEventListener('wheel', handleWheel);
-    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  // Close mobile menu on route change
+  useEffect(() => {
+    setIsMobileMenuOpen(false);
+  }, [pathname]);
+
+  const isActive = (href: string) => {
+    if (href === '/') return pathname === '/';
+    return pathname.startsWith(href);
+  };
 
   return (
     <>
       <motion.header
-        className={`fixed top-0 left-0 right-0 z-50 ${
-          isScrolled ? 'bg-gray-900/80 backdrop-blur-lg' : 'bg-transparent'
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+          isScrolled
+            ? 'bg-white/95 backdrop-blur-md shadow-soft border-b border-surface-200'
+            : 'bg-transparent'
         }`}
-        initial={{ y: 0, opacity: 1 }}
-        animate={{ y: 0, opacity: 1 }}
+        initial={{ y: -100 }}
+        animate={{ y: 0 }}
+        transition={{ duration: 0.5 }}
       >
-        <nav className="mx-auto max-w-7xl px-6 lg:px-8" aria-label="Global">
-          <div className="flex items-center justify-between py-6">
-            <div className="flex lg:flex-1">
-              <Link href="/" className="-m-1.5 p-1.5 flex items-center">
+        <nav className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8" aria-label="Global">
+          <div className="flex items-center justify-between h-20">
+            {/* Logo */}
+            <div className="flex-shrink-0">
+              <Link href="/" className="flex items-center gap-3">
                 <Image
-                  src="/company_logo.png"
-                  alt="Lawmwad Technologies logo"
-                  width={101}
-                  height={91}
-                  className="h-8 w-auto rounded-sm shadow-sm ring-1 ring-white/10"
+                  src="/1000050622.png"
+                  alt="Lawmwad Technologies"
+                  width={50}
+                  height={50}
+                  className="h-12 w-auto"
                   priority
                 />
+                <div className="hidden sm:block">
+                  <span className={`text-lg font-bold ${isScrolled ? 'text-primary-900' : 'text-primary-900'}`}>
+                    Lawmwad
+                  </span>
+                  <span className={`text-lg font-bold ${isScrolled ? 'text-accent-500' : 'text-accent-500'}`}>
+                    Tech
+                  </span>
+                </div>
               </Link>
             </div>
 
-            {/* Mobile menu button */}
-            <div className="flex lg:hidden">
-              <button
-                type="button"
-                className="relative inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-800 hover:text-white focus:outline-none"
-                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              >
-                <span className="absolute -inset-0.5" />
-                <span className="sr-only">Open main menu</span>
-                <div className="relative w-6 h-6">
-                  <motion.span
-                    className="absolute w-6 h-0.5 bg-current transform transition-transform"
-                    animate={{ rotate: isMobileMenuOpen ? 45 : 0, y: isMobileMenuOpen ? 8 : 0 }}
-                  />
-                  <motion.span
-                    className="absolute w-6 h-0.5 bg-current top-2"
-                    animate={{ opacity: isMobileMenuOpen ? 0 : 1 }}
-                  />
-                  <motion.span
-                    className="absolute w-6 h-0.5 bg-current top-4 transform transition-transform"
-                    animate={{ rotate: isMobileMenuOpen ? -45 : 0, y: isMobileMenuOpen ? -8 : 0 }}
-                  />
-                </div>
-              </button>
-            </div>
-
-            {/* Desktop navigation */}
-            <div className="hidden lg:flex lg:gap-x-12">
+            {/* Desktop Navigation */}
+            <div className="hidden lg:flex lg:items-center lg:gap-x-8">
               {navigation.map((item) => (
-                <motion.div
+                <Link
                   key={item.name}
-                  whileHover={{ scale: 1.05 }}
-                  className="relative group"
+                  href={item.href}
+                  className={`relative text-sm font-medium transition-colors duration-200 ${
+                    isActive(item.href)
+                      ? 'text-primary-800'
+                      : isScrolled
+                      ? 'text-gray-600 hover:text-primary-800'
+                      : 'text-gray-700 hover:text-primary-800'
+                  }`}
                 >
-                  <Link
-                    href={item.href}
-                    className="text-sm font-semibold leading-6 text-white transition-colors duration-200 hover:text-blue-400"
-                  >
-                    {item.name}
-                  </Link>
-                  <motion.div
-                    className="absolute -bottom-1 left-0 w-0 h-0.5 bg-blue-500"
-                    whileHover={{ width: '100%' }}
-                    transition={{ duration: 0.2 }}
-                  />
-                </motion.div>
+                  {item.name}
+                  {isActive(item.href) && (
+                    <motion.div
+                      className="absolute -bottom-1 left-0 right-0 h-0.5 bg-accent-500 rounded-full"
+                      layoutId="activeNav"
+                      transition={{ type: 'spring', stiffness: 380, damping: 30 }}
+                    />
+                  )}
+                </Link>
               ))}
             </div>
 
-            <div className="hidden lg:flex lg:flex-1 lg:justify-end">
-              <motion.div
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                <Link
-                  href="#contact"
-                  className="relative inline-flex items-center gap-x-1.5 rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
+            {/* CTA Button */}
+            <div className="hidden lg:flex lg:items-center lg:gap-x-4">
+              <Link href="/contact">
+                <Button
+                  variant="primary"
+                  size="md"
+                  rightIcon={<ChevronRight className="w-4 h-4" />}
                 >
                   Get Started
-                  <motion.span
-                    animate={{ x: [0, 3, 0] }}
-                    transition={{ duration: 1.5, repeat: Infinity }}
-                  >
-                    →
-                  </motion.span>
-                </Link>
-              </motion.div>
+                </Button>
+              </Link>
+            </div>
+
+            {/* Mobile Menu Button */}
+            <div className="flex lg:hidden">
+              <button
+                type="button"
+                className={`inline-flex items-center justify-center p-2 rounded-lg transition-colors ${
+                  isScrolled
+                    ? 'text-gray-600 hover:bg-surface-100'
+                    : 'text-gray-700 hover:bg-white/10'
+                }`}
+                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              >
+                <span className="sr-only">Open main menu</span>
+                {isMobileMenuOpen ? (
+                  <X className="h-6 w-6" />
+                ) : (
+                  <Menu className="h-6 w-6" />
+                )}
+              </button>
             </div>
           </div>
+        </nav>
 
-          {/* Mobile menu */}
-          <AnimatePresence>
-            {isMobileMenuOpen && (
-              <motion.div
-                className="lg:hidden"
-                initial={{ opacity: 0, height: 0 }}
-                animate={{ opacity: 1, height: 'auto' }}
-                exit={{ opacity: 0, height: 0 }}
-                transition={{ duration: 0.3 }}
-              >
-                <div className="mt-6 pb-6 space-y-4">
-                  {navigation.map((item) => (
-                    <motion.div
-                      key={item.name}
-                      initial={{ x: -20, opacity: 0 }}
-                      animate={{ x: 0, opacity: 1 }}
-                      transition={{ duration: 0.3 }}
-                    >
-                      <Link
-                        href={item.href}
-                        className="block text-base font-semibold leading-7 text-white hover:text-blue-400"
-                        onClick={() => setIsMobileMenuOpen(false)}
-                      >
-                        {item.name}
-                      </Link>
-                    </motion.div>
-                  ))}
+        {/* Mobile Menu */}
+        <AnimatePresence>
+          {isMobileMenuOpen && (
+            <motion.div
+              className="lg:hidden bg-white border-t border-surface-200"
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: 'auto' }}
+              exit={{ opacity: 0, height: 0 }}
+              transition={{ duration: 0.3 }}
+            >
+              <div className="px-4 py-6 space-y-1">
+                {navigation.map((item, index) => (
                   <motion.div
-                    initial={{ x: -20, opacity: 0 }}
-                    animate={{ x: 0, opacity: 1 }}
-                    transition={{ duration: 0.3, delay: 0.2 }}
-                    className="mt-8"
+                    key={item.name}
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: index * 0.05 }}
                   >
                     <Link
-                      href="#contact"
-                      className="block w-full rounded-md bg-blue-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
-                      onClick={() => setIsMobileMenuOpen(false)}
+                      href={item.href}
+                      className={`block px-4 py-3 rounded-xl text-base font-medium transition-colors ${
+                        isActive(item.href)
+                          ? 'bg-primary-50 text-primary-800'
+                          : 'text-gray-600 hover:bg-surface-100 hover:text-primary-800'
+                      }`}
                     >
-                      Get Started
+                      {item.name}
                     </Link>
                   </motion.div>
-                </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </nav>
+                ))}
+                <motion.div
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: navigation.length * 0.05 }}
+                  className="pt-4"
+                >
+                  <Link href="/contact" className="block">
+                    <Button variant="primary" size="lg" fullWidth>
+                      Get Started
+                    </Button>
+                  </Link>
+                </motion.div>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </motion.header>
 
-      {/* Spacer to prevent content from hiding behind fixed header */}
+      {/* Spacer */}
       <div className="h-20" />
     </>
   );
-} 
+}

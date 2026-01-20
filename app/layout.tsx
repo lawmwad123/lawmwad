@@ -1,18 +1,32 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import Navbar from "./components/Navbar";
+import Header from "./components/Header";
 import Footer from "./components/Footer";
-import AOS from "aos";
-import "aos/dist/aos.css";
-import Providers from "./providers";
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = Inter({
+  subsets: ["latin"],
+  display: 'swap',
+  variable: '--font-inter',
+});
 
 export const metadata: Metadata = {
-  title: "Lawmwad Technologies & Industries",
-  description: "Leading provider of AI-driven software and hardware solutions for businesses, schools, hospitals, and industries.",
-  keywords: "AI solutions, software development, hardware innovations, school management, hospital management, e-commerce, IoT, Uganda tech company",
+  title: {
+    default: "Lawmwad Technologies | Software Solutions for Africa",
+    template: "%s | Lawmwad Technologies",
+  },
+  description: "Building innovative software solutions for African businesses. From school management to fleet tracking, we create technology that works offline-first and integrates with local payment systems.",
+  keywords: [
+    "software development Uganda",
+    "school management system Africa",
+    "fleet tracking system",
+    "mobile app development",
+    "enterprise software",
+    "offline-first applications",
+    "mobile money integration",
+    "web development Uganda",
+    "Lawmwad Technologies"
+  ],
   authors: [{ name: "Lawmwad Technologies" }],
   creator: "Lawmwad Technologies",
   publisher: "Lawmwad Technologies",
@@ -26,17 +40,26 @@ export const metadata: Metadata = {
     canonical: '/',
   },
   openGraph: {
-    title: "Lawmwad Technologies & Industries",
-    description: "Leading provider of AI-driven software and hardware solutions for businesses, schools, hospitals, and industries.",
+    title: "Lawmwad Technologies | Software Solutions for Africa",
+    description: "Building innovative software solutions for African businesses. From school management to fleet tracking, we create technology that works offline-first.",
     url: 'https://lawmwad.com',
     siteName: 'Lawmwad Technologies',
     locale: 'en_US',
     type: 'website',
+    images: [
+      {
+        url: '/1000050622.png',
+        width: 512,
+        height: 512,
+        alt: 'Lawmwad Technologies Logo',
+      },
+    ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: "Lawmwad Technologies & Industries",
-    description: "Leading provider of AI-driven software and hardware solutions for businesses, schools, hospitals, and industries.",
+    title: "Lawmwad Technologies | Software Solutions for Africa",
+    description: "Building innovative software solutions for African businesses.",
+    images: ['/1000050622.png'],
   },
   robots: {
     index: true,
@@ -60,15 +83,13 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en">
-      <body className={inter.className}>
-        <Providers>
-          <Navbar />
-          <main className="min-h-screen">
-            {children}
-          </main>
-          <Footer />
-        </Providers>
+    <html lang="en" className={inter.variable}>
+      <body className={`${inter.className} antialiased`}>
+        <Header />
+        <main className="min-h-screen">
+          {children}
+        </main>
+        <Footer />
       </body>
     </html>
   );
