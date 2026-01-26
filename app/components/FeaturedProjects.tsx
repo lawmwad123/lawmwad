@@ -1,5 +1,6 @@
 'use client';
 
+import { useMemo } from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
@@ -9,6 +10,9 @@ import { Button } from './ui/Button';
 import { featuredProjects } from '@/lib/projects';
 
 export default function FeaturedProjects() {
+  // Memoize featured projects to prevent unnecessary re-renders
+  const projectsToShow = useMemo(() => featuredProjects.slice(0, 3), []);
+
   return (
     <Section id="projects">
       <SectionHeader
@@ -18,7 +22,7 @@ export default function FeaturedProjects() {
       />
 
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {featuredProjects.slice(0, 3).map((project, index) => (
+        {projectsToShow.map((project, index) => (
           <ProjectCard key={project.id} project={project} index={index} />
         ))}
       </div>

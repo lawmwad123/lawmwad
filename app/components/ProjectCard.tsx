@@ -1,5 +1,6 @@
 'use client';
 
+import { Component, ErrorInfo, ReactNode } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowUpRight, ExternalLink } from 'lucide-react';
 import { Badge } from './ui/Badge';
@@ -9,6 +10,38 @@ import type { Project } from '@/lib/projects';
 interface ProjectCardProps {
   project: Project;
   index?: number;
+}
+
+interface ErrorBoundaryState {
+  hasError: boolean;
+  error: Error | null;
+}
+
+// Error boundary for preview component
+class PreviewErrorBoundary extends Component<
+  { children: ReactNode; fallback: ReactNode },
+  ErrorBoundaryState
+> {
+  constructor(props: { children: ReactNode; fallback: ReactNode }) {
+    super(props);
+    this.state = { hasError: false, error: null };
+  }
+
+  static getDerivedStateFromError(error: Error): ErrorBoundaryState {
+    return { hasError: true, error };
+  }
+
+  componentDidCatch(error: Error, errorInfo: ErrorInfo) {
+    // Log error but don't crash the app
+    console.error('Preview error caught:', error, errorInfo);
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return <>{this.props.fallback}</>;
+    }
+    return this.props.children;
+  }
 }
 
 export default function ProjectCard({ project, index = 0 }: ProjectCardProps) {
@@ -32,11 +65,19 @@ export default function ProjectCard({ project, index = 0 }: ProjectCardProps) {
           <div className="card overflow-hidden h-full flex flex-col transition-all duration-300 hover:scale-[1.02] hover:shadow-soft-xl hover:border-primary-200">
             {/* Hero Preview Section - Live Website Preview */}
             <div className="relative aspect-[16/10] overflow-hidden bg-white rounded-t-2xl">
-              <WebsitePreview
-                url={projectUrl}
-                title={project.title}
-                category={project.category}
-              />
+              <PreviewErrorBoundary
+                fallback={
+                  <div className="relative w-full h-full bg-gradient-to-br from-primary-100 to-surface-100 flex items-center justify-center rounded-t-2xl">
+                    <div className="text-gray-400 text-sm">Preview unavailable</div>
+                  </div>
+                }
+              >
+                <WebsitePreview
+                  url={projectUrl}
+                  title={project.title}
+                  category={project.category}
+                />
+              </PreviewErrorBoundary>
 
               {/* Overlay on Hover */}
               <div className="absolute inset-0 bg-primary-900/0 group-hover:bg-primary-900/60 transition-all duration-300 flex items-center justify-center z-30">

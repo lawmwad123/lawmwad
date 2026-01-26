@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Section, SectionHeader } from '../components/ui/Section';
 import ProjectCard from '../components/ProjectCard';
@@ -9,10 +9,13 @@ import { projects, projectCategories } from '@/lib/projects';
 export default function ProjectsPage() {
   const [activeCategory, setActiveCategory] = useState('all');
 
-  const filteredProjects =
-    activeCategory === 'all'
-      ? projects
-      : projects.filter((p) => p.category === activeCategory);
+  const filteredProjects = useMemo(
+    () =>
+      activeCategory === 'all'
+        ? projects
+        : projects.filter((p) => p.category === activeCategory),
+    [activeCategory]
+  );
 
   return (
     <>
