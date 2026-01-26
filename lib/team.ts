@@ -29,9 +29,11 @@ export const team: TeamMember[] = [
   },
   {
     id: '3',
-    name: 'Waniala Alphonse Lincolne',
-    role: 'Software Developer',
-    bio: 'Skilled software developer dedicated to building robust and scalable applications. Passionate about clean code, modern development practices, and delivering solutions that meet real-world business needs.',
+    name: 'Waniala Lincoln Alphonse',
+    role: 'DevOps Engineer',
+    bio: 'DevOps Engineer specializing in cloud infrastructure, CI/CD pipelines, and automation. Passionate about building reliable, scalable systems and streamlining deployment processes. Focuses on infrastructure as code, containerization, monitoring, and ensuring high availability for production environments.',
+    image: '/profile/alphonse_lincoln.png',
+    github: 'https://github.com/alphwan14',
   },
 ];
 
