@@ -1,0 +1,17 @@
+{
+  "name": "Lawmwad Engineering Lab",
+  "short_name": "Lawmwad Lab",
+  "description": "Pushing boundaries in autonomy, robotics, and connectivity.",
+  "start_url": "/index.html",
+  "display": "standalone",
+  "background_color": "#07070D",
+  "theme_color": "#07070D",
+  "icons": [
+    {
+      "src": "assets/images/logos/lawmwad-logo-main.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

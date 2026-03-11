@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Projects | Lawmwad Engineering Lab</title>
+  <meta name="description" content="Explore Lawmwad Engineering Lab's cutting-edge research projects in autonomy, robotics, mechanics, and connectivity.">
+  <link rel="icon" type="image/png" href="../assets/images/logos/lawmwad-logo-main.png">
+  <link rel="apple-touch-icon" href="../assets/images/logos/lawmwad-logo-main.png">
+  <link rel="manifest" href="../manifest.json">
+  <meta name="theme-color" content="#07070D">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Poppins:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/styles.css">
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav class="nav" role="navigation" aria-label="Main navigation">
+    <div class="nav__inner">
+      <a href="../index.html" class="nav__logo">
+        <img src="../assets/images/logos/lawmwad-logo-main.png" alt="Lawmwad Engineering Lab" width="42" height="42">
+        <span class="nav__logo-text"><span>Lawmwad</span> Engineering Lab</span>
+      </a>
+      <div class="nav__links">
+        <a href="../index.html" class="nav__link">Home</a>
+        <a href="vision.html" class="nav__link">Vision</a>
+        <a href="projects.html" class="nav__link active">Projects</a>
+        <a href="programs.html" class="nav__link">Programs</a>
+        <a href="team.html" class="nav__link">Team</a>
+        <a href="gallery.html" class="nav__link">Gallery</a>
+        <a href="join.html" class="btn btn--primary btn--sm nav__cta">Join Us</a>
+      </div>
+      <button class="nav__toggle" aria-label="Toggle navigation menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- PAGE HERO -->
+  <section class="page-hero">
+    <div class="page-hero__bg">
+      <picture>
+        <source srcset="../assets/images/backgrounds/mesh-network-blue.avif" type="image/avif">
+        <img src="../assets/images/backgrounds/mesh-network-blue.png" alt="" loading="eager">
+      </picture>
+    </div>
+    <div class="page-hero__overlay"></div>
+    <div class="page-hero__content container">
+      <div class="section-header" style="margin-bottom: 0;">
+        <span class="section-label">Research Portfolio</span>
+        <h1>Our Projects</h1>
+        <p>Cutting-edge research across autonomy, robotics, mechanics, and connectivity.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FILTER + PROJECTS -->
+  <section class="section">
+    <div class="container">
+      <div class="filter-bar reveal">
+        <button class="filter-btn active" data-filter="all">All</button>
+        <button class="filter-btn" data-filter="robotics">Robotics</button>
+        <button class="filter-btn" data-filter="mechanics">Mechanics</button>
+        <button class="filter-btn" data-filter="software">Software</button>
+        <button class="filter-btn" data-filter="electronics">Electronics</button>
+        <button class="filter-btn" data-filter="connectivity">Connectivity</button>
+      </div>
+
+      <div class="grid grid--3">
+
+        <!-- SuperThermo Motor -->
+        <div class="card reveal" data-category="mechanics" id="superthermo">
+          <picture>
+            <source srcset="../assets/images/projects/superthermo-xray.avif" type="image/avif">
+            <img src="../assets/images/projects/superthermo-xray.png" alt="SuperThermo Motor - X-ray thermal view" class="card__image" loading="lazy">
+          </picture>
+          <div class="card__body">
+            <span class="card__tag card__tag--mechanics">Mechanics</span>
+            <h3 class="card__title">SuperThermo Motor</h3>
+            <p class="card__text">HTS and thermoelectric cooling for electric aviation motors. Developing next-gen motor cooling with 3D-printed components and copper coil windings.</p>
+            <a href="#superthermo" class="card__link">
+              Learn More
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            </a>
+          </div>
+        </div>
+
+        <!-- Project ORION -->
+        <div class="card reveal" data-category="robotics" id="orion">
+          <picture>
+            <source srcset="../assets/images/projects/orion-drone.avif" type="image/avif">
+            <img src="../assets/images/projects/orion-drone.png" alt="ORION autonomous drone" class="card__image" loading="lazy">
+          </picture>
+          <div class="card__body">
+            <span class="card__tag card__tag--robotics">Robotics</span>
+            <h3 class="card__title">Project ORION</h3>
+            <p class="card__text">Autonomous drone platform for navigation, surveillance, and delivery in challenging environments including GPS-denied zones.</p>
+            <a href="#orion" class="card__link">
+              Learn More
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            </a>
+          </div>
+        </div>
+
+        <!-- FusionFlight -->
+        <div class="card reveal" data-category="connectivity" id="fusionflight">
+          <picture>
+            <source srcset="../assets/images/projects/fusionflight-drone.avif" type="image/avif">
+            <img src="../assets/images/projects/fusionflight-drone.png" alt="FusionFlight GPS drone system" class="card__image" loading="lazy">
+          </picture>
+          <div class="card__body">
+            <span class="card__tag card__tag--connectivity">Connectivity</span>
+            <h3 class="card__title">FusionFlight</h3>
+            <p class="card__text">GPS signal correction at low-to-mid altitudes for urban canyon environments. Includes SCOUT, PATHFINDER, and SAPPHIRE ML systems.</p>
+            <a href="#fusionflight" class="card__link">
+              Learn More
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            </a>
+          </div>
+        </div>
+
+        <!-- Project AETHER -->
+        <div class="card reveal" data-category="software" id="aether">
+          <picture>
+            <source srcset="../assets/images/projects/sdr-pluto.avif" type="image/avif">
+            <img src="../assets/images/projects/sdr-pluto.png" alt="AETHER - SDR localization system" class="card__image" loading="lazy">
+          </picture>
+          <div class="card__body">
+            <span class="card__tag card__tag--software">Software</span>
+            <h3 class="card__title">Project AETHER</h3>
+            <p class="card__text">AI-driven localization for navigation, communication, and control in GPS-denied environments using software-defined radio technology.</p>
+            <a href="#aether" class="card__link">
+              Learn More
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            </a>
+          </div>
+        </div>
+
+        <!-- IGNITE -->
+        <div class="card reveal" data-category="electronics" id="ignite">
+          <picture>
+            <source srcset="../assets/images/projects/arduino-prototype.avif" type="image/avif">
+            <img src="../assets/images/projects/arduino-prototype.png" alt="IGNITE IMU testbed" class="card__image" loading="lazy">
+          </picture>
+          <div class="card__body">
+            <span class="card__tag card__tag--electronics">Electronics</span>
+            <h3 class="card__title">IGNITE</h3>
+            <p class="card__text">Low-cost testbed for IMU calibration, CubeSat/drone control, and real-time validation &mdash; 100&ndash;1000x cheaper than commercial alternatives.</p>
+            <a href="#ignite" class="card__link">
+              Learn More
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            </a>
+          </div>
+        </div>
+
+        <!-- EAD Propulsion -->
+        <div class="card reveal" data-category="mechanics" id="ead">
+          <picture>
+            <source srcset="../assets/images/projects/pcb-board.avif" type="image/avif">
+            <img src="../assets/images/projects/pcb-board.png" alt="EAD Propulsion electronics" class="card__image" loading="lazy">
+          </picture>
+          <div class="card__body">
+            <span class="card__tag card__tag--mechanics">Mechanics</span>
+            <h3 class="card__title">EAD Propulsion</h3>
+            <p class="card__text">Electroaerodynamic propulsion using ionic wind with FDM and chemical deposition for conductive cores. Testing with 100g drones.</p>
+            <a href="#ead" class="card__link">
+              Learn More
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            </a>
+          </div>
+        </div>
+
+        <!-- Robotics Education -->
+        <div class="card reveal" data-category="robotics" id="education">
+          <picture>
+            <source srcset="../assets/images/projects/robotics-lego.avif" type="image/avif">
+            <img src="../assets/images/projects/robotics-lego.png" alt="Robotics education program" class="card__image" loading="lazy">
+          </picture>
+          <div class="card__body">
+            <span class="card__tag card__tag--robotics">Robotics</span>
+            <h3 class="card__title">Robotics Education</h3>
+            <p class="card__text">Hands-on robotics programs for students of all ages, from LEGO robotics to advanced autonomous systems and control theory.</p>
+            <a href="#education" class="card__link">
+              Learn More
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            </a>
+          </div>
+        </div>
+
+        <!-- Swarm Robotics -->
+        <div class="card reveal" data-category="robotics" id="swarm">
+          <picture>
+            <source srcset="../assets/images/projects/robots-floor.avif" type="image/avif">
+            <img src="../assets/images/projects/robots-floor.png" alt="Swarm robotics system" class="card__image" loading="lazy">
+          </picture>
+          <div class="card__body">
+            <span class="card__tag card__tag--robotics">Robotics</span>
+            <h3 class="card__title">Swarm Robotics</h3>
+            <p class="card__text">Multi-agent robotic systems exploring swarm intelligence, coordination algorithms, and distributed control for collaborative tasks.</p>
+            <a href="#swarm" class="card__link">
+              Learn More
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            </a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__grid">
+        <div class="footer__brand">
+          <img src="../assets/images/logos/lawmwad-logo-main.png" alt="Lawmwad Engineering Lab" height="40">
+          <p>Pushing boundaries in autonomy, robotics, and connectivity to create impactful, real-world engineering solutions.</p>
+        </div>
+        <div>
+          <h4 class="footer__heading">Explore</h4>
+          <ul class="footer__links">
+            <li><a href="vision.html">Vision</a></li>
+            <li><a href="projects.html">Projects</a></li>
+            <li><a href="programs.html">Programs</a></li>
+            <li><a href="gallery.html">Gallery</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="footer__heading">Labs</h4>
+          <ul class="footer__links">
+            <li><a href="programs.html#software">Software</a></li>
+            <li><a href="programs.html#robotics">Robotics</a></li>
+            <li><a href="programs.html#mechanics">Mechanics</a></li>
+            <li><a href="programs.html#electronics">Electronics</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="footer__heading">Connect</h4>
+          <ul class="footer__links">
+            <li><a href="team.html">Team</a></li>
+            <li><a href="join.html">Join Us</a></li>
+            <li><a href="mailto:contact@arcenglab.com">Contact</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        <span>&copy; 2026 Lawmwad Engineering Lab. All rights reserved.</span>
+        <div class="footer__socials">
+          <a href="#" aria-label="GitHub"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg></a>
+          <a href="#" aria-label="LinkedIn"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg></a>
+          <a href="#" aria-label="Twitter/X"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../assets/js/main.js"></script>
+</body>
+</html>
