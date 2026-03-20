@@ -3,7 +3,6 @@
 
 import { store } from './store.js';
 import { router } from './router.js';
-import { http } from './http.js';
 
 // Layout components
 import { Sidebar } from '../components/layout/sidebar.js';
@@ -51,7 +50,7 @@ class ArcApp {
       .add('/applications', ApplicationListPage, { title: 'Applications' })
       .add('/applications/:id', ApplicationDetailPage, { title: 'Application' });
 
-    // Check auth and mount layout
+    // Check auth using raw fetch (bypass http.js 401 interceptor)
     await this._checkAuth();
 
     // Listen for auth changes to show/hide layout
@@ -64,12 +63,19 @@ class ArcApp {
     });
 
     // Start router
+    if (!window.location.hash || window.location.hash === '#') {
+      window.location.hash = store.get('auth.user') ? '#/dashboard' : '#/login';
+    }
     router.start();
   }
 
   async _checkAuth() {
     try {
-      const { data } = await http.get('/api/admin/auth?action=me');
+      const res = await fetch('/api/admin/auth?action=me', {
+        credentials: 'same-origin',
+      });
+      if (!res.ok) throw new Error('Not authenticated');
+      const { data } = await res.json();
       store.set('auth.user', data);
       store.persist(['auth']);
       this._mountLayout();
