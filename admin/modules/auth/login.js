@@ -22,7 +22,7 @@ export class LoginPage extends ArcComponent {
         }
 
         try {
-          const res = await fetch('/api/admin/auth/login', {
+          const res = await fetch('/api/admin/auth?action=login', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             credentials: 'same-origin',

@@ -23,7 +23,7 @@ export class Topbar extends ArcComponent {
       },
       'click .topbar__logout': async () => {
         try {
-          await http.post('/api/admin/auth/logout', {});
+          await http.post('/api/admin/auth?action=logout', {});
         } catch { /* ignore */ }
         store.clear();
         router.navigate('/login');

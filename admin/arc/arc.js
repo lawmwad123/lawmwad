@@ -69,7 +69,7 @@ class ArcApp {
 
   async _checkAuth() {
     try {
-      const { data } = await http.get('/api/admin/auth/me');
+      const { data } = await http.get('/api/admin/auth?action=me');
       store.set('auth.user', data);
       store.persist(['auth']);
       this._mountLayout();
