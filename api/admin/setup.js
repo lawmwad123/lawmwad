@@ -15,8 +15,9 @@ module.exports = async function handler(req, res) {
 
   if (action === 'migrate') return handleMigrate(req, res);
   if (action === 'seed') return handleSeed(req, res);
+  if (action === 'reset-password') return handleResetPassword(req, res);
 
-  return res.status(400).json({ error: 'Invalid action. Use ?action=migrate|seed' });
+  return res.status(400).json({ error: 'Invalid action. Use ?action=migrate|seed|reset-password' });
 };
 
 async function handleMigrate(req, res) {
@@ -218,5 +219,27 @@ async function handleSeed(req, res) {
     if (err.message?.includes('unique')) return res.status(409).json({ error: 'Email already in use' });
     console.error('Seed error:', err);
     return res.status(500).json({ error: 'Failed to create admin user' });
+  }
+}
+
+async function handleResetPassword(req, res) {
+  const { email, password } = req.body;
+
+  if (!email || !password) return res.status(400).json({ error: 'Email and password are required' });
+  if (password.length < 8) return res.status(400).json({ error: 'Password must be at least 8 characters' });
+
+  const sql = getDb();
+
+  try {
+    const existing = await sql`SELECT id FROM users WHERE email = ${email.toLowerCase().trim()}`;
+    if (!existing.length) return res.status(404).json({ error: 'User not found' });
+
+    const passwordHash = await bcrypt.hash(password, 12);
+    await sql`UPDATE users SET password_hash = ${passwordHash}, updated_at = NOW() WHERE email = ${email.toLowerCase().trim()}`;
+
+    return res.status(200).json({ message: 'Password reset successfully' });
+  } catch (err) {
+    console.error('Reset password error:', err);
+    return res.status(500).json({ error: 'Failed to reset password' });
   }
 }
