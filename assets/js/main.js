@@ -306,6 +306,7 @@ function initApplicationForm() {
     const data = {
       name: form.querySelector('#name').value.trim(),
       email: form.querySelector('#email').value.trim(),
+      phone: form.querySelector('#phone').value.trim(),
       lab: form.querySelector('#lab').value,
       level: form.querySelector('#level').value,
       about: form.querySelector('#about').value.trim(),
