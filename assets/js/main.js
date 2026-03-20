@@ -248,13 +248,13 @@ function animateCount(el, start, end, duration, prefix, suffix) {
 /* --- Image Download Protection --- */
 function initImageProtection() {
   document.addEventListener('contextmenu', (e) => {
-    if (e.target.tagName === 'IMG' || e.target.closest('picture')) {
+    if (e.target.tagName === 'IMG' || e.target.closest('picture') || e.target.tagName === 'VIDEO' || e.target.closest('.video-bg') || e.target.closest('.video-showcase__wrapper')) {
       e.preventDefault();
     }
   });
 
   document.addEventListener('dragstart', (e) => {
-    if (e.target.tagName === 'IMG') {
+    if (e.target.tagName === 'IMG' || e.target.tagName === 'VIDEO') {
       e.preventDefault();
     }
   });
