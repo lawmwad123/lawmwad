@@ -1,5 +1,18 @@
 {
   "buildCommand": "",
   "outputDirectory": ".",
-  "framework": null
+  "framework": null,
+  "functions": {
+    "api/*.js": {
+      "memory": 128,
+      "maxDuration": 10
+    },
+    "api/admin/**/*.js": {
+      "memory": 256,
+      "maxDuration": 15
+    }
+  },
+  "rewrites": [
+    { "source": "/admin/(.*)", "destination": "/admin/index.html" }
+  ]
 }

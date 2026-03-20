@@ -11,6 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initCountUp();
   initImageProtection();
   initAccordionFooter();
+  initApplicationForm();
 });
 
 /* --- Navigation Scroll Effect --- */
@@ -286,6 +287,60 @@ function initAccordionFooter() {
         links.classList.add('open');
       }
     });
+  });
+}
+
+/* --- Application Form Submission --- */
+function initApplicationForm() {
+  const form = document.querySelector('form[action="#"]');
+  if (!form) return;
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const btn = form.querySelector('button[type="submit"]');
+    const originalText = btn.textContent;
+    btn.textContent = 'Submitting...';
+    btn.disabled = true;
+
+    const data = {
+      name: form.querySelector('#name').value.trim(),
+      email: form.querySelector('#email').value.trim(),
+      lab: form.querySelector('#lab').value,
+      level: form.querySelector('#level').value,
+      about: form.querySelector('#about').value.trim(),
+    };
+
+    try {
+      const res = await fetch('/api/apply', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      });
+
+      const result = await res.json();
+
+      if (res.ok) {
+        btn.textContent = 'Submitted!';
+        btn.style.background = 'var(--color-success, #4ade80)';
+        form.reset();
+        setTimeout(() => {
+          btn.textContent = originalText;
+          btn.style.background = '';
+          btn.disabled = false;
+        }, 3000);
+      } else {
+        throw new Error(result.error || 'Submission failed');
+      }
+    } catch (err) {
+      btn.textContent = 'Error — Try Again';
+      btn.style.background = 'var(--color-error, #ef4444)';
+      btn.disabled = false;
+      setTimeout(() => {
+        btn.textContent = originalText;
+        btn.style.background = '';
+      }, 3000);
+    }
   });
 }
 
