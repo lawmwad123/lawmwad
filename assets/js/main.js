@@ -348,34 +348,45 @@ function initApplicationForm() {
 
 /* --- Lazy Video Backgrounds --- */
 function initVideoBackgrounds() {
-  const videos = document.querySelectorAll('.video-bg video[data-src]');
+  const videos = document.querySelectorAll('.video-bg video[data-src], .video-showcase__wrapper video[data-src]');
   if (!videos.length) return;
 
   // Respect reduced motion preference
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  function loadAndPlay(video) {
+    if (!video.dataset.src) return;
+    if (!video.src || video.src === window.location.href) {
+      video.src = video.dataset.src;
+      video.load();
+      video.addEventListener('canplaythrough', () => {
+        video.classList.add('loaded');
+      }, { once: true });
+      video.addEventListener('loadeddata', () => {
+        setTimeout(() => video.classList.add('loaded'), 200);
+      }, { once: true });
+      // Fallback: mark loaded after timeout even if events don't fire
+      setTimeout(() => {
+        if (!video.classList.contains('loaded') && video.readyState >= 2) {
+          video.classList.add('loaded');
+        }
+      }, 3000);
+    }
+    video.play().catch(() => {});
+  }
 
   const observer = new IntersectionObserver(
     (entries) => {
       entries.forEach(entry => {
         const video = entry.target;
         if (entry.isIntersecting) {
-          if (!video.src) {
-            video.src = video.dataset.src;
-            video.addEventListener('canplaythrough', () => {
-              video.classList.add('loaded');
-            }, { once: true });
-            // Fallback if canplaythrough doesn't fire
-            video.addEventListener('loadeddata', () => {
-              setTimeout(() => video.classList.add('loaded'), 200);
-            }, { once: true });
-          }
-          video.play().catch(() => {});
+          loadAndPlay(video);
         } else {
           video.pause();
         }
       });
     },
-    { rootMargin: '200px 0px' }
+    { rootMargin: '300px 0px' }
   );
 
   videos.forEach(video => observer.observe(video));
