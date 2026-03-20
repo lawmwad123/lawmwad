@@ -12,6 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initImageProtection();
   initAccordionFooter();
   initApplicationForm();
+  initVideoBackgrounds();
 });
 
 /* --- Navigation Scroll Effect --- */
@@ -343,6 +344,44 @@ function initApplicationForm() {
       }, 3000);
     }
   });
+}
+
+/* --- Lazy Video Backgrounds --- */
+function initVideoBackgrounds() {
+  const videos = document.querySelectorAll('.video-bg video[data-src]');
+  if (!videos.length) return;
+
+  // Skip on mobile to save bandwidth
+  if (window.innerWidth < 768) return;
+
+  // Respect reduced motion preference
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach(entry => {
+        const video = entry.target;
+        if (entry.isIntersecting) {
+          if (!video.src) {
+            video.src = video.dataset.src;
+            video.addEventListener('canplaythrough', () => {
+              video.classList.add('loaded');
+            }, { once: true });
+            // Fallback if canplaythrough doesn't fire
+            video.addEventListener('loadeddata', () => {
+              setTimeout(() => video.classList.add('loaded'), 200);
+            }, { once: true });
+          }
+          video.play().catch(() => {});
+        } else {
+          video.pause();
+        }
+      });
+    },
+    { rootMargin: '200px 0px' }
+  );
+
+  videos.forEach(video => observer.observe(video));
 }
 
 /* --- Active Nav Link --- */
