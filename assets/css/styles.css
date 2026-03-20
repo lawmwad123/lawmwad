@@ -696,6 +696,15 @@ p {
   z-index: 2;
 }
 
+@media (max-width: 767px) {
+  .video-bg video.loaded {
+    opacity: 0.08;
+  }
+  .video-bg__overlay {
+    background: linear-gradient(180deg, var(--color-bg) 0%, rgba(7,7,13,0.75) 25%, rgba(7,7,13,0.75) 75%, var(--color-bg) 100%);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .video-bg video {
     display: none;

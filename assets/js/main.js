@@ -351,9 +351,6 @@ function initVideoBackgrounds() {
   const videos = document.querySelectorAll('.video-bg video[data-src]');
   if (!videos.length) return;
 
-  // Skip on mobile to save bandwidth
-  if (window.innerWidth < 768) return;
-
   // Respect reduced motion preference
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
