@@ -601,6 +601,7 @@ a:hover { color: var(--color-primary-light); }
 .badge--lead { background: var(--color-primary-glow); color: var(--color-primary); }
 .badge--member { background: var(--color-success-glow); color: var(--color-success); }
 .badge--viewer { background: rgba(102, 102, 128, 0.15); color: var(--color-text-muted); }
+.badge--arc-ai { background: rgba(107, 94, 248, 0.15); color: #8F84FF; border: 1px solid rgba(107, 94, 248, 0.25); }
 
 /* --- Forms --- */
 .form-group {

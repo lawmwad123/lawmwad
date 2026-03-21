@@ -113,10 +113,13 @@ export class ApplicationListPage extends ArcComponent {
             <div class="kanban__column-body" data-status="${stage.key}">
               ${byStage[stage.key].map(app => `
                 <div class="kanban__card" draggable="true" data-id="${escape(app.id)}">
-                  <div class="kanban__card-name">${escape(app.name)}</div>
+                  <div class="kanban__card-name">
+                    ${escape(app.name)}
+                    ${app.source === 'arc-ai' ? '<span class="badge badge--arc-ai" style="margin-left:6px; font-size:0.6rem; vertical-align:middle;">Arc AI</span>' : ''}
+                  </div>
                   <div class="kanban__card-meta">
                     <span class="badge badge--${escape(app.lab)}">${escape(app.lab)}</span>
-                    &middot; ${escape(app.level)}
+                    &middot; ${app.source === 'arc-ai' ? 'Demo Request' : escape(app.level)}
                     &middot; ${this._timeAgo(app.created_at)}
                   </div>
                   ${app.rating ? `<div style="margin-top:6px; font-size:0.75rem; color:var(--color-warning);">${'★'.repeat(app.rating)}${'☆'.repeat(5 - app.rating)}</div>` : ''}
