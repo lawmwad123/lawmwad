@@ -17,6 +17,8 @@ import { ProjectListPage } from '../modules/projects/project-list.js';
 import { ProjectDetailPage } from '../modules/projects/project-detail.js';
 import { ApplicationListPage } from '../modules/applications/application-list.js';
 import { ApplicationDetailPage } from '../modules/applications/application-detail.js';
+import { DemoListPage } from '../modules/arc-ai/demo-list.js';
+import { DemoDetailPage } from '../modules/arc-ai/demo-detail.js';
 
 class ArcApp {
   constructor() {
@@ -48,7 +50,9 @@ class ArcApp {
       .add('/projects', ProjectListPage, { title: 'Projects' })
       .add('/projects/:id', ProjectDetailPage, { title: 'Project' })
       .add('/applications', ApplicationListPage, { title: 'Applications' })
-      .add('/applications/:id', ApplicationDetailPage, { title: 'Application' });
+      .add('/applications/:id', ApplicationDetailPage, { title: 'Application' })
+      .add('/arc-ai/demos', DemoListPage, { title: 'Demo Requests' })
+      .add('/arc-ai/demos/:id', DemoDetailPage, { title: 'Demo Request' });
 
     // Check auth using raw fetch (bypass http.js 401 interceptor)
     await this._checkAuth();

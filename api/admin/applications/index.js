@@ -7,7 +7,7 @@ module.exports = withAuth(async function handler(req, res) {
 
   if (req.method === 'GET') {
     try {
-      const { status, lab, search } = req.query || {};
+      const { status, lab, search, source } = req.query || {};
 
       let apps;
       if (search) {
@@ -16,6 +16,7 @@ module.exports = withAuth(async function handler(req, res) {
           WHERE (name ILIKE ${'%' + search + '%'} OR email ILIKE ${'%' + search + '%'})
           ${status ? sql`AND status = ${status}` : sql``}
           ${lab ? sql`AND lab = ${lab}` : sql``}
+          ${source ? sql`AND source = ${source}` : sql``}
           ORDER BY created_at DESC
         `;
       } else {
@@ -24,6 +25,7 @@ module.exports = withAuth(async function handler(req, res) {
           WHERE 1=1
           ${status ? sql`AND status = ${status}` : sql``}
           ${lab ? sql`AND lab = ${lab}` : sql``}
+          ${source ? sql`AND source = ${source}` : sql``}
           ORDER BY created_at DESC
         `;
       }

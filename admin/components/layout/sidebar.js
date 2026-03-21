@@ -38,6 +38,9 @@ export class Sidebar extends ArcComponent {
       { section: 'Work', items: [
         { path: '/projects', icon: 'folder', label: 'Projects' },
       ]},
+      { section: 'Arc AI', items: [
+        { path: '/arc-ai/demos', icon: 'arcai', label: 'Demo Requests' },
+      ]},
     ];
 
     const icons = {
@@ -45,6 +48,7 @@ export class Sidebar extends ArcComponent {
       users: '<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>',
       inbox: '<polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/><path d="M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/>',
       folder: '<path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>',
+      arcai: '<path d="M12 3L21 20H3L12 3Z" stroke-width="1.5" stroke-linejoin="round"/><line x1="8" y1="15" x2="16" y2="15" stroke-width="1.5"/>',
     };
 
     return `
