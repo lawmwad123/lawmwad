@@ -5,7 +5,14 @@ module.exports = async function handler(req, res) {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const { name, email, org, industry } = req.body || {};
+  // Vercel may pass body as a raw string in some subdirectory project configs
+  let body = req.body;
+  if (typeof body === 'string') {
+    try { body = JSON.parse(body); } catch { body = {}; }
+  }
+  body = body || {};
+
+  const { name, email, org, industry } = body;
 
   if (!name || !email || !org || !industry) {
     return res.status(400).json({ error: 'Missing required fields' });
