@@ -238,10 +238,11 @@ function initDemoForm() {
       name:     (form.querySelector('#demo-name')?.value || '').trim(),
       email:    (form.querySelector('#demo-email')?.value || '').trim(),
       org:      (form.querySelector('#demo-org')?.value || '').trim(),
+      whatsapp: (form.querySelector('#demo-whatsapp')?.value || '').trim(),
       industry: (form.querySelector('#demo-industry')?.value || '').trim(),
     };
 
-    if (!data.name || !data.email || !data.org || !data.industry) {
+    if (!data.name || !data.email || !data.org || !data.whatsapp || !data.industry) {
       btn.textContent = 'Please fill in all fields';
       btn.style.background = '#EF4444';
       btn.disabled = false;

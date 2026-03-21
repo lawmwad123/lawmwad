@@ -12,9 +12,9 @@ module.exports = async function handler(req, res) {
   }
   body = body || {};
 
-  const { name, email, org, industry } = body;
+  const { name, email, org, whatsapp, industry } = body;
 
-  if (!name || !email || !org || !industry) {
+  if (!name || !email || !org || !whatsapp || !industry) {
     return res.status(400).json({ error: 'Missing required fields' });
   }
 
@@ -30,7 +30,7 @@ module.exports = async function handler(req, res) {
       VALUES (
         ${name.trim()},
         ${email.trim().toLowerCase()},
-        ${''},
+        ${whatsapp.trim()},
         ${industry.trim()},
         ${'demo-request'},
         ${org.trim()},

@@ -116,6 +116,12 @@ export class DemoDetailPage extends ArcComponent {
                 <div class="detail-field__value"><a href="mailto:${this.esc(d.email)}">${this.esc(d.email)}</a></div>
               </div>
               <div class="detail-field">
+                <div class="detail-field__label">WhatsApp</div>
+                <div class="detail-field__value">
+                  ${d.phone ? `<a href="https://wa.me/${d.phone.replace(/\D/g,'')}">${this.esc(d.phone)}</a>` : '—'}
+                </div>
+              </div>
+              <div class="detail-field">
                 <div class="detail-field__label">Organization</div>
                 <div class="detail-field__value">${this.esc(d.about || '—')}</div>
               </div>
