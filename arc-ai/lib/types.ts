@@ -6,6 +6,14 @@ export interface Vertical {
   sample_queries: string[];
 }
 
+export interface DiscoveredEntity {
+  entity_name: string;
+  display_name: string;
+  description: string;
+  row_count: number;
+  sample_questions: string[];
+}
+
 export interface Session {
   session_id: string;
   org_name: string;
@@ -15,6 +23,10 @@ export interface Session {
   available_actions: Action[];
   sample_queries: string[];
   entity_count: number;
+  // Discovery fields — populated for custom connections
+  discovered_entities?: DiscoveredEntity[];
+  suggested_queries?: string[];
+  capabilities_summary?: string;
 }
 
 export interface Action {

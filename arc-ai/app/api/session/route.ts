@@ -5,7 +5,7 @@ const DEMO_SERVICE = process.env.DEMO_SERVICE_URL || "http://localhost:8001";
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const { vertical, connection_string } = body;
+    const { vertical, connection_string, schema_name, org_name, actions_enabled } = body;
 
     let url: string;
     let payload: Record<string, unknown>;
@@ -15,7 +15,12 @@ export async function POST(req: NextRequest) {
       payload = { vertical };  // demo-service requires vertical in body too
     } else if (connection_string) {
       url     = `${DEMO_SERVICE}/session/connect`;
-      payload = { connection_string };
+      payload = {
+        connection_string,
+        ...(schema_name      && { schema_name }),
+        ...(org_name         && { org_name }),
+        ...(actions_enabled !== undefined && { actions_enabled }),
+      };
     } else {
       return NextResponse.json({ error: "Must provide vertical or connection_string" }, { status: 400 });
     }
