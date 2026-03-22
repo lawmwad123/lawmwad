@@ -36,6 +36,7 @@ const config: Config = {
         "count-up":   "fadeIn 0.6s ease-out forwards",
         "bar-grow":   "barGrow 0.8s ease-out forwards",
         "pulse-dot":  "pulseDot 1.5s ease-in-out infinite",
+        "highlight":  "highlight 2s ease-out forwards",
       },
       keyframes: {
         fadeUp: {
@@ -57,6 +58,10 @@ const config: Config = {
         pulseDot: {
           "0%, 100%": { opacity: "0.4", transform: "scale(0.8)" },
           "50%":      { opacity: "1",   transform: "scale(1.2)" },
+        },
+        highlight: {
+          "0%":   { backgroundColor: "rgb(254 249 195)" },  // yellow-100
+          "100%": { backgroundColor: "transparent" },
         },
       },
     },

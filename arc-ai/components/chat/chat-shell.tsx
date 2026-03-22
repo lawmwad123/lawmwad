@@ -5,8 +5,7 @@ import type { Session, AgentResult, ProgressStep } from "@/lib/types";
 import { useSessionStore, useUIStore } from "@/lib/store";
 import { ChatHeader }  from "./chat-header";
 import { ChatSidebar } from "./chat-sidebar";
-import { MessageList } from "./message-list";
-import { ChatInput }   from "./chat-input";
+import { AiThread }    from "./ai-thread";
 import { ProgressBar } from "./progress-bar";
 
 export type Message = {
@@ -22,7 +21,13 @@ type PendingAction = {
   action_plan: AgentResult["action_plan"];
 };
 
-export function ChatShell({ session }: { session: Session }) {
+export function ChatShell({
+  session,
+  onActionCompleted,
+}: {
+  session: Session;
+  onActionCompleted?: (actionType?: string) => void;
+}) {
   const { userRole }   = useSessionStore();
   const { sidebarOpen } = useUIStore();
 
@@ -168,6 +173,7 @@ export function ChatShell({ session }: { session: Session }) {
       );
       setPendingAction(null);
       setProgress([]);
+      onActionCompleted?.((result as AgentResult & { action_type?: string }).action_type);
     }
 
     if (type === "error") {
@@ -200,6 +206,7 @@ export function ChatShell({ session }: { session: Session }) {
         result: data,
       };
       setMessages((prev: Message[]) => [...prev, resultMsg]);
+      if (approved) onActionCompleted?.();
     } catch { /* ignore */ }
     finally { setPendingAction(null); }
   }
@@ -213,20 +220,17 @@ export function ChatShell({ session }: { session: Session }) {
           <ChatSidebar session={session} onQueryClick={sendMessage} />
         )}
 
-        <main className="flex-1 flex flex-col overflow-hidden">
+        <main className="flex-1 flex flex-col overflow-hidden relative">
           {progress.some((p: ProgressStep) => p.visible) && (
             <ProgressBar steps={progress} />
           )}
-          <MessageList
+          <AiThread
             messages={messages}
             streaming={streaming}
             pendingAction={pendingAction}
-            onConfirmAction={confirmAction}
-          />
-          <ChatInput
-            onSend={sendMessage}
-            disabled={streaming}
             suggestions={session.sample_queries}
+            onSend={sendMessage}
+            onConfirm={confirmAction}
           />
         </main>
       </div>

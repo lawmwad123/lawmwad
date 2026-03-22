@@ -144,7 +144,8 @@ export function OnboardingHub() {
                   return (
                     <button
                       key={v.id}
-                      onClick={() => setSelected(isSel ? "" : v.id)}
+                      disabled={loading}
+                      onClick={() => { setSelected(v.id); startSandbox(v.id); }}
                       className={cn(
                         "text-left p-6 rounded-2xl border-2 transition-all",
                         isSel
@@ -172,21 +173,12 @@ export function OnboardingHub() {
               </div>
             )}
 
-            <div className="mt-8 flex justify-end">
-              <button
-                disabled={!selected || loading}
-                onClick={() => startSandbox(selected)}
-                className={cn(
-                  "flex items-center gap-2 px-8 py-3 rounded-xl font-semibold text-base transition-colors",
-                  selected && !loading
-                    ? "bg-brand-600 hover:bg-brand-700 text-white"
-                    : "bg-gray-200 dark:bg-gray-700 text-gray-400 cursor-not-allowed"
-                )}
-              >
-                {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : null}
-                {loading ? "Preparing demo..." : "Start Demo →"}
-              </button>
-            </div>
+            {loading && (
+              <div className="mt-8 flex justify-center items-center gap-2 text-gray-500 dark:text-gray-400 text-sm">
+                <Loader2 className="w-4 h-4 animate-spin" />
+                Preparing demo...
+              </div>
+            )}
           </>
         )}
 
