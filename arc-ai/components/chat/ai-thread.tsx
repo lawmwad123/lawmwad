@@ -33,7 +33,7 @@ function toThreadMessageLike(msg: Message): ThreadMessageLike {
   const base = {
     id:      msg.id,
     role:    msg.role as "user" | "assistant",
-    content: msg.text || (msg.pending ? "…" : ""),
+    content: msg.text || "",
     metadata: {
       custom: {
         result:    msg.result ?? null,
@@ -58,11 +58,11 @@ function toThreadMessageLike(msg: Message): ThreadMessageLike {
 
 function ThinkingDots() {
   return (
-    <div className="flex gap-[5px] items-end px-1 py-2" aria-label="Thinking…">
+    <div className="flex gap-[6px] items-end px-1 py-2" aria-label="Thinking…">
       {[0, 1, 2].map((i) => (
         <span
           key={i}
-          className="w-[7px] h-[7px] rounded-full bg-gray-400 dark:bg-gray-500 animate-dot-wave"
+          className="w-2 h-2 rounded-full bg-gray-500 dark:bg-gray-400 animate-dot-wave"
           style={{ animationDelay: `${i * 160}ms` }}
         />
       ))}

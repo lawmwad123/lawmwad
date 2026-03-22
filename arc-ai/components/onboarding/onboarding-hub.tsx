@@ -308,10 +308,6 @@ export function OnboardingHub() {
         <Link href="/" className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition-colors">
           <ArrowLeft className="w-5 h-5" />
         </Link>
-        <div>
-          <h1 className="font-semibold text-gray-900 dark:text-white">Start a Demo Session</h1>
-          <p className="text-xs text-gray-500">Pick a pre-loaded vertical or connect your own database</p>
-        </div>
       </div>
 
       <div className="max-w-4xl mx-auto px-6 py-12">
