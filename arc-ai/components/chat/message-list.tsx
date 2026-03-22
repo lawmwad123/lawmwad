@@ -42,7 +42,7 @@ export function MessageList({ messages, streaming, pendingAction, onConfirmActio
         />
       ))}
       {streaming && messages[messages.length - 1]?.role === "assistant" && messages[messages.length - 1]?.pending && !messages[messages.length - 1]?.text && (
-        <ThinkingDots />
+        <ThinkingIndicator />
       )}
       <div ref={bottomRef} />
     </div>
@@ -88,7 +88,7 @@ function MessageBubble({
         )}
 
         {/* Pending dots */}
-        {msg.pending && !msg.text && <ThinkingDots inline />}
+        {msg.pending && !msg.text && <ThinkingIndicator inline />}
 
         {/* Result card */}
         {msg.result && !msg.pending && (
@@ -110,19 +110,14 @@ function MessageBubble({
   );
 }
 
-function ThinkingDots({ inline = false }: { inline?: boolean }) {
+function ThinkingIndicator({ inline = false }: { inline?: boolean }) {
   return (
     <div className={cn(
-      "flex gap-1.5 items-center",
+      "flex items-center gap-2",
       !inline && "px-4 py-3 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-2xl rounded-tl-sm w-fit"
     )}>
-      {[0, 1, 2].map((i) => (
-        <span
-          key={i}
-          className="w-2 h-2 rounded-full bg-gray-400 dark:bg-gray-600 animate-pulse-dot"
-          style={{ animationDelay: `${i * 200}ms` }}
-        />
-      ))}
+      <span className="w-2 h-2 rounded-full bg-brand-500 animate-pulse-dot flex-shrink-0" />
+      <span className="text-brand-400 dark:text-brand-500 text-[13px] leading-none animate-cursor-blink">▋</span>
     </div>
   );
 }

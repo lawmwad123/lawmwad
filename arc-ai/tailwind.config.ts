@@ -30,14 +30,15 @@ const config: Config = {
         mono: ["var(--font-geist-mono)", "monospace"],
       },
       animation: {
-        "fade-up":    "fadeUp 0.4s ease-out forwards",
-        "fade-in":    "fadeIn 0.3s ease-out forwards",
-        "slide-right":"slideRight 0.35s ease-out forwards",
-        "count-up":   "fadeIn 0.6s ease-out forwards",
-        "bar-grow":   "barGrow 0.8s ease-out forwards",
-        "pulse-dot":  "pulseDot 1.5s ease-in-out infinite",
-        "highlight":  "highlight 2s ease-out forwards",
-        "dot-wave":   "dotWave 1.4s ease-in-out infinite both",
+        "fade-up":      "fadeUp 0.4s ease-out forwards",
+        "fade-in":      "fadeIn 0.3s ease-out forwards",
+        "slide-right":  "slideRight 0.35s ease-out forwards",
+        "count-up":     "fadeIn 0.6s ease-out forwards",
+        "bar-grow":     "barGrow 0.8s ease-out forwards",
+        "pulse-dot":    "pulseDot 1.5s ease-in-out infinite",
+        "highlight":    "highlight 2s ease-out forwards",
+        "dot-wave":     "dotWave 1.4s ease-in-out infinite both",
+        "cursor-blink": "cursorBlink 1s step-end infinite",
       },
       keyframes: {
         fadeUp: {
@@ -61,12 +62,16 @@ const config: Config = {
           "50%":      { opacity: "1",   transform: "scale(1.2)" },
         },
         highlight: {
-          "0%":   { backgroundColor: "rgb(254 249 195)" },  // yellow-100
+          "0%":   { backgroundColor: "rgb(254 249 195)" },
           "100%": { backgroundColor: "transparent" },
         },
         dotWave: {
           "0%, 80%, 100%": { transform: "translateY(0)",    opacity: "0.35" },
           "40%":           { transform: "translateY(-5px)", opacity: "1"    },
+        },
+        cursorBlink: {
+          "0%, 100%": { opacity: "1" },
+          "50%":      { opacity: "0" },
         },
       },
     },

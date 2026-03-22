@@ -12,7 +12,7 @@ import {
 } from "@assistant-ui/react";
 import { Bot, User, ArrowDown, Send, StopCircle, MessageSquare, Zap } from "lucide-react";
 import type { Message } from "./chat-shell";
-import type { AgentResult, ActionPlan } from "@/lib/types";
+import type { AgentResult, ActionPlan, ProgressStep } from "@/lib/types";
 import { ResultRenderer } from "@/components/results/result-renderer";
 import { ActionCard }     from "@/components/actions/action-card";
 import { RISK_COLORS }    from "@/lib/vertical-config";
@@ -26,6 +26,10 @@ const ActionCtx = createContext<{
   pendingAction:  PendingAction | null;
   confirmAction:  (approved: boolean) => void;
 }>({ pendingAction: null, confirmAction: () => {} });
+
+// ─── Progress context (latest visible step status text) ───────────────────────
+
+const StepCtx = createContext<string>("");
 
 // ─── Convert our Message → ThreadMessageLike ──────────────────────────────────
 
@@ -54,18 +58,21 @@ function toThreadMessageLike(msg: Message): ThreadMessageLike {
   return base;
 }
 
-// ─── Typing dots (ChatGPT-style wave) ─────────────────────────────────────────
+// ─── Thinking indicator: pulsing dot + step text + blinking cursor ────────────
 
-function ThinkingDots() {
+function ThinkingIndicator() {
+  const step = useContext(StepCtx);
   return (
-    <div className="flex gap-[6px] items-end px-1 py-2" aria-label="Thinking…">
-      {[0, 1, 2].map((i) => (
-        <span
-          key={i}
-          className="w-2 h-2 rounded-full bg-gray-500 dark:bg-gray-400 animate-dot-wave"
-          style={{ animationDelay: `${i * 160}ms` }}
-        />
-      ))}
+    <div className="flex items-center gap-2 py-1" aria-label="Thinking…">
+      <span className="w-2 h-2 rounded-full bg-brand-500 animate-pulse-dot flex-shrink-0" />
+      {step ? (
+        <span className="text-[12px] text-gray-400 dark:text-gray-500 leading-none">
+          {step}
+          <span className="ml-0.5 text-brand-400 dark:text-brand-500 animate-cursor-blink">▋</span>
+        </span>
+      ) : (
+        <span className="text-brand-400 dark:text-brand-500 text-[13px] leading-none animate-cursor-blink">▋</span>
+      )}
     </div>
   );
 }
@@ -168,10 +175,10 @@ function AssistantMessage() {
       </div>
 
       <div className="flex-1 max-w-[88%] flex flex-col gap-2 min-w-0">
-        {/* Thinking dots while waiting for first token */}
+        {/* Thinking indicator while waiting for first token */}
         {isRunning && !fullText && (
           <div className="px-3.5 py-2 rounded-2xl rounded-tl-sm bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 w-fit">
-            <ThinkingDots />
+            <ThinkingIndicator />
           </div>
         )}
 
@@ -328,6 +335,7 @@ interface AiThreadProps {
   messages:       Message[];
   streaming:      boolean;
   pendingAction:  PendingAction | null;
+  progress:       ProgressStep[];
   suggestions:    string[];
   actions:        ActionDef[];
   actionsEnabled: boolean;
@@ -339,12 +347,14 @@ export function AiThread({
   messages,
   streaming,
   pendingAction,
+  progress,
   suggestions,
   actions,
   actionsEnabled,
   onSend,
   onConfirm,
 }: AiThreadProps) {
+  const latestStep = progress.filter((p) => p.visible).at(-1)?.status ?? "";
 
   const onNew = useCallback(async (msg: { content: ReadonlyArray<{ type: string; text?: string }> }) => {
     const text = msg.content
@@ -365,6 +375,7 @@ export function AiThread({
   const runtime = useExternalStoreRuntime(adapter);
 
   return (
+    <StepCtx.Provider value={latestStep}>
     <ActionCtx.Provider value={{ pendingAction, confirmAction: onConfirm }}>
       <AssistantRuntimeProvider runtime={runtime}>
         <ThreadPrimitive.Root className="flex flex-col h-full">
@@ -399,5 +410,6 @@ export function AiThread({
         </ThreadPrimitive.Root>
       </AssistantRuntimeProvider>
     </ActionCtx.Provider>
+    </StepCtx.Provider>
   );
 }

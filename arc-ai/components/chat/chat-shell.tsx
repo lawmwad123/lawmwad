@@ -299,6 +299,7 @@ export function ChatShell({
           messages={messages}
           streaming={streaming}
           pendingAction={pendingAction}
+          progress={progress}
           suggestions={session.sample_queries}
           actions={session.available_actions}
           actionsEnabled={session.actions_enabled}
