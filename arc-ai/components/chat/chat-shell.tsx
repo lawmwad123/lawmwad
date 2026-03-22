@@ -250,7 +250,7 @@ export function ChatShell({
         body:    JSON.stringify({
           session_id: session.session_id,
           thread_id:  pendingAction.thread_id,
-          approved,
+          status:     approved ? "approved" : "rejected",
         }),
       });
       const data = await res.json() as AgentResult;
@@ -261,7 +261,10 @@ export function ChatShell({
         result: data,
       };
       setMessages((prev: Message[]) => [...prev, resultMsg]);
-      if (approved) onActionCompleted?.();
+      if (approved) {
+        // Small delay so the DB write is visible before we re-fetch the panel data
+        setTimeout(() => onActionCompleted?.(), 400);
+      }
     } catch { /* ignore */ }
     finally { setPendingAction(null); }
   }
