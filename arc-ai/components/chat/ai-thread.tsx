@@ -37,20 +37,29 @@ const ActionCtx = createContext<{
 // ─── Convert our Message → ThreadMessageLike ──────────────────────────────────
 
 function toThreadMessageLike(msg: Message): ThreadMessageLike {
-  return {
-    id:        msg.id,
-    role:      msg.role,
-    content:   msg.text || (msg.pending ? "…" : ""),
-    status:    msg.pending
-      ? { type: "running" }
-      : { type: "complete", reason: "stop" },
+  const base = {
+    id:      msg.id,
+    role:    msg.role as "user" | "assistant",
+    content: msg.text || (msg.pending ? "…" : ""),
     metadata: {
       custom: {
-        result:      msg.result ?? null,
-        isPending:   msg.pending ?? false,
+        result:    msg.result ?? null,
+        isPending: msg.pending ?? false,
       },
     },
   };
+
+  // status is ONLY valid on assistant messages in assistant-ui
+  if (msg.role === "assistant") {
+    return {
+      ...base,
+      status: msg.pending
+        ? { type: "running" }
+        : { type: "complete", reason: "stop" },
+    };
+  }
+
+  return base;
 }
 
 // ─── Typing dots ──────────────────────────────────────────────────────────────
