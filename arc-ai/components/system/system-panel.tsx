@@ -47,11 +47,24 @@ export const SystemPanel = forwardRef<SystemPanelHandle, Props>(function SystemP
     if (!view) return;
     setLoading(true);
     try {
-      const res  = await fetch("/api/data", {
-        method:  "POST",
-        headers: { "Content-Type": "application/json" },
-        body:    JSON.stringify({ session_id: session.session_id, sql: view.sql }),
-      });
+      const fetchRows = async () => {
+        const r = await fetch("/api/data", {
+          method:  "POST",
+          headers: { "Content-Type": "application/json" },
+          body:    JSON.stringify({ session_id: session.session_id, sql: view.sql }),
+        });
+        // On 500, retry once after 2.5s (Fly.io machine may have just woken — pool recovers)
+        if (r.status === 500) {
+          await new Promise((res) => setTimeout(res, 2500));
+          return fetch("/api/data", {
+            method:  "POST",
+            headers: { "Content-Type": "application/json" },
+            body:    JSON.stringify({ session_id: session.session_id, sql: view.sql }),
+          });
+        }
+        return r;
+      };
+      const res  = await fetchRows();
       const data = await res.json() as { rows: Record<string, unknown>[] };
       const newRows = data.rows ?? [];
 

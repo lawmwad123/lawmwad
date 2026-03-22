@@ -116,7 +116,14 @@ export function ChatShell({
     } finally {
       setStreaming(false);
       setMessages((prev: Message[]) =>
-        prev.map((m) => (m.id === asstMsg.id ? { ...m, pending: false } : m))
+        prev.map((m) => {
+          if (m.id !== asstMsg.id) return m;
+          // If stream ended with no text and no result, show a fallback error
+          if (!m.text && !m.result) {
+            return { ...m, text: "The connection was interrupted. Please try again.", pending: false };
+          }
+          return { ...m, pending: false };
+        })
       );
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
