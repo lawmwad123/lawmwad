@@ -1,4 +1,5 @@
 /** Per-vertical entity definitions powering the system UI left panel. */
+import type { DiscoveredEntity, DbColumn } from "./types";
 
 export type ColType =
   | "text"
@@ -408,4 +409,155 @@ export const VERTICAL_VIEWS: Record<string, EntityView[]> = {
 
 export function getViews(vertical: string): EntityView[] {
   return VERTICAL_VIEWS[vertical] ?? [];
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Dynamic view builder — for custom DB connections.
+// Uses exact table/column names from the introspected schema; never guesses.
+// ─────────────────────────────────────────────────────────────────────────────
+
+// Internal/migration tables to skip
+const SKIP_TABLE_PREFIXES = ["_prisma", "_drizzle", "__", "schema_migration", "flyway", "knex_"];
+const SKIP_TABLE_EXACT    = new Set(["_prisma_migrations", "spatial_ref_sys"]);
+
+// Columns that are too large or irrelevant to show in a table view
+const SKIP_COL_NAMES = new Set([
+  "password", "hash", "salt", "token", "secret", "refreshToken",
+  "fullDescription", "bio", "notes", "logs", "metadata", "raw_body",
+  "checksum", "rolled_back_at", "applied_steps_count",
+]);
+
+// Columns whose names suggest long free text
+const SKIP_COL_SUFFIXES = ["Description", "Content", "Body", "Html", "Json"];
+
+// Simple icon heuristic based on table name keywords
+const TABLE_ICON_KEYWORDS: [string, string][] = [
+  ["vehicle",     "🚗"], ["car",         "🚗"], ["truck",       "🚚"],
+  ["order",       "📋"], ["invoice",      "🧾"], ["payment",     "💳"],
+  ["product",     "📦"], ["inventory",    "📦"], ["item",        "🛍️"],
+  ["customer",    "👤"], ["client",       "👤"], ["user",        "👤"],
+  ["employee",    "👥"], ["staff",        "👥"], ["team",        "👥"],
+  ["patient",     "🧑‍⚕️"],["doctor",       "👨‍⚕️"],["appointment",  "📅"],
+  ["member",      "👥"], ["account",      "🏦"], ["loan",        "💳"],
+  ["beneficiary", "🤲"], ["project",      "📋"], ["donor",       "❤️"],
+  ["student",     "🎓"], ["teacher",      "👨‍🏫"],["class",        "🏫"],
+  ["inquiry",     "💬"], ["message",      "✉️"], ["contact",     "📬"],
+  ["service",     "⚙️"], ["feature",      "✨"], ["setting",     "⚙️"],
+  ["faq",         "❓"], ["testimonial",  "⭐"], ["review",      "⭐"],
+  ["partner",     "🤝"], ["image",        "🖼️"], ["photo",       "🖼️"],
+  ["log",         "📝"], ["audit",        "📝"], ["migration",   "🔧"],
+];
+
+function tableIcon(name: string): string {
+  const lower = name.toLowerCase();
+  for (const [kw, icon] of TABLE_ICON_KEYWORDS) {
+    if (lower.includes(kw)) return icon;
+  }
+  return "📊";
+}
+
+/** Map Postgres data_type → ColType */
+function pgTypeToColType(pgType: string, colName: string): ColType {
+  const lower  = pgType.toLowerCase();
+  const name   = colName.toLowerCase();
+
+  // UUID / primary key
+  if (lower === "uuid" || (name === "id" && lower.includes("char"))) return "id";
+
+  // Timestamps and dates
+  if (lower.includes("timestamp") || lower === "date" || lower === "time") return "date";
+
+  // Booleans
+  if (lower === "boolean") return "boolean";
+
+  // Enum / USER-DEFINED → badge
+  if (lower === "user-defined") return "badge";
+
+  // Numbers — currency heuristic
+  if (lower.includes("int") || lower.includes("numeric") ||
+      lower.includes("decimal") || lower.includes("real") ||
+      lower.includes("double") || lower.includes("float")) {
+    const currencyHints = ["price", "amount", "cost", "fee", "salary", "revenue",
+                           "total", "balance", "budget", "spent", "income"];
+    if (currencyHints.some((h) => name.includes(h))) return "currency";
+    return "number";
+  }
+
+  return "text";
+}
+
+function shouldSkipCol(col: DbColumn): boolean {
+  if (SKIP_COL_NAMES.has(col.name)) return true;
+  if (SKIP_COL_SUFFIXES.some((s) => col.name.endsWith(s))) return true;
+  return false;
+}
+
+function buildColDefs(columns: DbColumn[]): ColDef[] {
+  // Pick cols to show: skip heavy/internal, cap at 7
+  const visible = columns
+    .filter((c) => !shouldSkipCol(c))
+    .slice(0, 7);
+
+  // Identify the first non-id text column as the "primary" (display name)
+  const primaryIdx = visible.findIndex(
+    (c) => pgTypeToColType(c.type, c.name) === "text" && c.name !== "id"
+  );
+
+  return visible.map((c, i): ColDef => ({
+    key:     c.name,
+    label:   c.name,          // exact DB column name — no guessing
+    type:    pgTypeToColType(c.type, c.name),
+    primary: i === primaryIdx,
+    badges:  pgTypeToColType(c.type, c.name) === "badge" ? STATUS_BADGES : undefined,
+  }));
+}
+
+function buildOrderBy(columns: DbColumn[]): string {
+  // Prefer createdAt DESC, then updatedAt DESC, then no ORDER BY
+  const names = columns.map((c) => c.name);
+  if (names.includes("createdAt"))  return ` ORDER BY "createdAt" DESC`;
+  if (names.includes("created_at")) return ` ORDER BY "created_at" DESC`;
+  if (names.includes("updatedAt"))  return ` ORDER BY "updatedAt" DESC`;
+  return "";
+}
+
+/**
+ * Build EntityView[] directly from introspected schema entities.
+ * Uses exact table names and column names — never invents anything.
+ */
+export function buildDynamicViews(
+  entities: DiscoveredEntity[],
+  schemaName: string,
+): EntityView[] {
+  return entities
+    .filter((e) => {
+      const n = e.entity_name;
+      if (SKIP_TABLE_EXACT.has(n)) return false;
+      if (SKIP_TABLE_PREFIXES.some((p) => n.toLowerCase().startsWith(p))) return false;
+      return true;
+    })
+    .map((e): EntityView => {
+      const tableName  = e.entity_name;
+      // Always quote the identifier to handle PascalCase, spaces, reserved words
+      const quotedId   = `"${tableName}"`;
+      const sqlTable   = schemaName === "public" ? quotedId : `"${schemaName}".${quotedId}`;
+      const cols       = e.columns ?? [];
+      const colDefs    = cols.length > 0 ? buildColDefs(cols) : [];
+      const orderBy    = cols.length > 0 ? buildOrderBy(cols) : "";
+
+      // Build SELECT list using only the visible columns (avoid SELECT * when we know the schema)
+      const selectCols = colDefs.length > 0
+        ? colDefs.map((c) => `"${c.key}"`).join(", ")
+        : "*";
+
+      return {
+        id:         tableName,
+        label:      tableName,          // exact DB table name
+        icon:       tableIcon(tableName),
+        sql:        `SELECT ${selectCols} FROM ${sqlTable}${orderBy} LIMIT 100`,
+        columns:    colDefs,
+        refreshOn:  [],
+        emptyLabel: `No records in ${tableName}`,
+      };
+    });
 }

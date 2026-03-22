@@ -6,7 +6,7 @@ import {
 } from "react";
 import { RefreshCw, Sparkles } from "lucide-react";
 import type { Session } from "@/lib/types";
-import { getViews, type EntityView } from "@/lib/vertical-views";
+import { getViews, buildDynamicViews, type EntityView } from "@/lib/vertical-views";
 import { EntityTable } from "./entity-table";
 import { VERTICAL_ICONS, VERTICAL_COLORS } from "@/lib/vertical-config";
 import { cn } from "@/lib/cn";
@@ -30,7 +30,13 @@ export const SystemPanel = forwardRef<SystemPanelHandle, Props>(function SystemP
   { session, onAiQuery },
   ref,
 ) {
-  const views             = getViews(session.vertical);
+  // For custom DB connections use views derived from the actual introspected schema.
+  // For named sandbox verticals fall back to the hardcoded vertical views.
+  const views = (
+    session.vertical === "custom" && session.discovered_entities?.length
+      ? buildDynamicViews(session.discovered_entities, session.schema_name)
+      : getViews(session.vertical)
+  );
   const [activeId, setActiveId]   = useState<string>(views[0]?.id ?? "");
   const [rows,     setRows]       = useState<Record<string, unknown>[]>([]);
   const [loading,  setLoading]    = useState(false);

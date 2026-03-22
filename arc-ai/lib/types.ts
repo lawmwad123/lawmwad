@@ -6,12 +6,19 @@ export interface Vertical {
   sample_queries: string[];
 }
 
+export interface DbColumn {
+  name: string;
+  type: string;       // Postgres data_type string, e.g. "text", "integer", "boolean"
+  nullable: boolean;
+}
+
 export interface DiscoveredEntity {
   entity_name: string;
   display_name: string;
   description: string;
   row_count: number;
   sample_questions: string[];
+  columns?: DbColumn[];
 }
 
 export interface Session {
