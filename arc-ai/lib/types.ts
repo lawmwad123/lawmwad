@@ -67,15 +67,26 @@ export interface AgentResult {
   error?: string;
 }
 
+export interface RecordDiffField {
+  field: string;
+  old:   string;
+  new:   string;
+}
+
 export interface ActionPlan {
-  action_type: string;
-  display_name: string;
-  description: string;
-  risk_level: "low" | "medium" | "high" | "critical";
-  params: Record<string, unknown>;
-  summary: string;
+  action_type:          string;
+  display_name:         string;
+  description:          string;
+  risk_level:           "low" | "medium" | "high" | "critical";
+  params:               Record<string, unknown>;
+  summary:              string;
   clarification_needed: boolean;
-  sql_template: string;
+  /** Raw SQL — kept for sandbox actions, hidden from users in UI */
+  sql_template:         string;
+  /** Human-readable before/after for each changed field */
+  record_diff?:         RecordDiffField[];
+  /** Identifying context of the record being mutated (name, email, etc.) */
+  record_preview?:      Record<string, unknown>;
 }
 
 export interface ProgressStep {

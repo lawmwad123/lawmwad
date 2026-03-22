@@ -1,7 +1,7 @@
 "use client";
 
-import { CheckCircle, XCircle, AlertTriangle, Zap } from "lucide-react";
-import type { ActionPlan } from "@/lib/types";
+import { CheckCircle, XCircle, AlertTriangle, Zap, ArrowRight } from "lucide-react";
+import type { ActionPlan, RecordDiffField } from "@/lib/types";
 import { RISK_COLORS } from "@/lib/vertical-config";
 import { cn } from "@/lib/cn";
 
@@ -34,29 +34,59 @@ export function ActionCard({ plan, onApprove, onReject }: Props) {
       <div className="px-4 py-3">
         <p className="text-sm text-gray-700 dark:text-gray-300 mb-3">{plan.summary}</p>
 
-        {/* Params */}
-        {Object.keys(plan.params).length > 0 && (
-          <div className="space-y-1.5 mb-4">
-            <div className="text-xs font-medium text-gray-500 dark:text-gray-400">Parameters</div>
-            <div className="grid grid-cols-2 gap-1.5">
-              {Object.entries(plan.params).map(([k, v]) => (
-                <div key={k} className="flex items-center gap-2 text-xs">
-                  <span className="text-gray-500 dark:text-gray-400">{k.replace(/_/g, " ")}:</span>
-                  <span className="font-medium text-gray-800 dark:text-gray-200">{String(v)}</span>
-                </div>
+        {/* Record context — who/what is being changed */}
+        {plan.record_preview && Object.keys(plan.record_preview).length > 0 && (
+          <div className="mb-3 px-3 py-2 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
+            <div className="text-[10px] font-semibold text-gray-400 uppercase tracking-wide mb-1.5">Record</div>
+            <div className="flex flex-wrap gap-x-4 gap-y-1">
+              {Object.entries(plan.record_preview).slice(0, 4).map(([k, v]) => (
+                <span key={k} className="text-xs text-gray-700 dark:text-gray-300">
+                  <span className="text-gray-400">{k.replace(/_/g, " ")}: </span>
+                  <span className="font-medium">{String(v)}</span>
+                </span>
               ))}
             </div>
           </div>
         )}
 
-        {/* SQL preview */}
-        {plan.sql_template && (
+        {/* Human-readable diff — what will change */}
+        {plan.record_diff && plan.record_diff.length > 0 ? (
           <div className="mb-4">
-            <div className="text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">SQL to execute</div>
-            <pre className="text-[11px] font-mono bg-gray-900 text-green-400 rounded-xl px-3 py-2.5 overflow-x-auto whitespace-pre-wrap leading-relaxed">
-              {plan.sql_template}
-            </pre>
+            <div className="text-[10px] font-semibold text-gray-400 uppercase tracking-wide mb-1.5">Changes</div>
+            <div className="rounded-xl overflow-hidden border border-gray-200 dark:border-gray-700">
+              {plan.record_diff.map((d: RecordDiffField, i: number) => (
+                <div
+                  key={d.field}
+                  className={cn(
+                    "flex items-center gap-2 px-3 py-2 text-xs",
+                    i > 0 && "border-t border-gray-100 dark:border-gray-800"
+                  )}
+                >
+                  <span className="text-gray-500 dark:text-gray-400 shrink-0 w-24 truncate">
+                    {d.field.replace(/_/g, " ")}
+                  </span>
+                  <span className="line-through text-red-400 dark:text-red-500 truncate max-w-[90px]">{d.old}</span>
+                  <ArrowRight className="w-3 h-3 text-gray-400 shrink-0" />
+                  <span className="font-semibold text-green-600 dark:text-green-400 truncate max-w-[90px]">{d.new}</span>
+                </div>
+              ))}
+            </div>
           </div>
+        ) : (
+          /* Fallback: legacy param display for sandbox registered actions */
+          Object.keys(plan.params).length > 0 && (
+            <div className="space-y-1.5 mb-4">
+              <div className="text-[10px] font-semibold text-gray-400 uppercase tracking-wide">Parameters</div>
+              <div className="grid grid-cols-2 gap-1.5">
+                {Object.entries(plan.params).map(([k, v]) => (
+                  <div key={k} className="flex items-center gap-2 text-xs">
+                    <span className="text-gray-500 dark:text-gray-400">{k.replace(/_/g, " ")}:</span>
+                    <span className="font-medium text-gray-800 dark:text-gray-200">{String(v)}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )
         )}
 
         {/* Clarification warning */}
