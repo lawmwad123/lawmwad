@@ -78,7 +78,7 @@ export function ChatShell({
         headers: { "Content-Type": "application/json" },
         body:    JSON.stringify({
           session_id: session.session_id,
-          message:    text,
+          query:      text,
           user_role:  userRole,
           thread_id:  threadId.current,
         }),
