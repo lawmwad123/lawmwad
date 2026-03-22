@@ -37,6 +37,7 @@ const config: Config = {
         "bar-grow":   "barGrow 0.8s ease-out forwards",
         "pulse-dot":  "pulseDot 1.5s ease-in-out infinite",
         "highlight":  "highlight 2s ease-out forwards",
+        "dot-wave":   "dotWave 1.4s ease-in-out infinite both",
       },
       keyframes: {
         fadeUp: {
@@ -62,6 +63,10 @@ const config: Config = {
         highlight: {
           "0%":   { backgroundColor: "rgb(254 249 195)" },  // yellow-100
           "100%": { backgroundColor: "transparent" },
+        },
+        dotWave: {
+          "0%, 80%, 100%": { transform: "translateY(0)",    opacity: "0.35" },
+          "40%":           { transform: "translateY(-5px)", opacity: "1"    },
         },
       },
     },

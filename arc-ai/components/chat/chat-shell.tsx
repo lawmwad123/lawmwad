@@ -38,6 +38,8 @@ export function ChatShell({
   const threadId         = useRef<string | null>(null);
   const abortRef         = useRef<AbortController | null>(null);
   const sendMessageRef   = useRef<(text: string) => void>(() => {});
+  // Accumulates rows from demo-service "data" events (sent before "result")
+  const pendingDataRef   = useRef<{ rows: Record<string, unknown>[]; rowCount: number } | null>(null);
 
   useEffect(() => {
     setMessages([{
@@ -84,7 +86,8 @@ export function ChatShell({
       if (!res.body) throw new Error("No stream");
       const reader  = res.body.getReader();
       const decoder = new TextDecoder();
-      let buffer    = "";
+      let buffer          = "";
+      let currentEvtType  = "";   // persists across chunk boundaries
 
       while (true) {
         const { done, value } = await reader.read();
@@ -94,12 +97,20 @@ export function ChatShell({
         buffer      = lines.pop() ?? "";
 
         for (const line of lines) {
+          // SSE event name line — store for the upcoming data line
+          if (line.startsWith("event: ")) {
+            currentEvtType = line.slice(7).trim();
+            continue;
+          }
           if (!line.startsWith("data: ")) continue;
           const raw = line.slice(6).trim();
           if (!raw || raw === "[DONE]") continue;
           try {
-            const evt = JSON.parse(raw) as Record<string, unknown>;
-            handleEvent(evt, asstMsg.id);
+            const payload = JSON.parse(raw) as Record<string, unknown>;
+            // Merge event name into payload as "type" (demo-service uses SSE event field;
+            // main agent-service puts "type" inside the JSON — support both)
+            const evt = { type: currentEvtType || payload.type, ...payload };
+            handleEvent(evt as Record<string, unknown>, asstMsg.id);
           } catch { /* ignore parse errors */ }
         }
       }
@@ -133,7 +144,11 @@ export function ChatShell({
 
   function handleEvent(evt: Record<string, unknown>, asstId: string) {
     const type = evt.type as string;
-    if (type === "thread") { threadId.current = evt.thread_id as string; }
+
+    if (type === "thread") {
+      threadId.current = (evt.thread_id as string) ?? threadId.current;
+    }
+
     if (type === "progress") {
       const step = evt.step as ProgressStep;
       setProgress((prev: ProgressStep[]) => {
@@ -142,38 +157,84 @@ export function ChatShell({
         return [...prev, step];
       });
     }
+
+    // demo-service sends SQL rows in a separate "data" event before "result"
+    if (type === "data") {
+      pendingDataRef.current = {
+        rows:     (evt.rows     as Record<string, unknown>[]) ?? [],
+        rowCount: (evt.row_count as number) ?? 0,
+      };
+    }
+
     if (type === "result") {
-      const result = evt.result as AgentResult;
+      // Support both formats:
+      //   • main agent-service: { result: AgentResult }  (nested)
+      //   • demo-service:       { text, template_type, … } (top-level)
+      const nested  = evt.result as AgentResult | undefined;
+      const pending = pendingDataRef.current;
+      pendingDataRef.current = null;
+
+      const result: AgentResult = nested ?? {
+        thread_id:        (evt.thread_id        as string)                      ?? threadId.current ?? "",
+        text:             (evt.text              as string)                      ?? "",
+        template_type:    (evt.template_type     as AgentResult["template_type"]) ?? "text",
+        data:             pending?.rows           ?? (evt.data as Record<string, unknown>[]),
+        row_count:        pending?.rowCount       ?? (evt.row_count as number),
+        chart_type:       evt.chart_type          as AgentResult["chart_type"],
+        display_metadata: evt.display_metadata    as AgentResult["display_metadata"],
+        suggested_followups: evt.suggested_followups as string[],
+        suggested_title:  evt.suggested_title     as string,
+      };
+
       threadId.current = result.thread_id ?? threadId.current;
       setMessages((prev: Message[]) =>
         prev.map((m) => m.id === asstId ? { ...m, text: result.text, result, pending: false } : m)
       );
       setProgress([]);
     }
+
     if (type === "confirmation_required") {
-      const result = evt.result as AgentResult;
-      threadId.current = result.thread_id ?? threadId.current;
-      if (result.thread_id && result.action_plan) {
-        setPendingAction({ thread_id: result.thread_id, action_plan: result.action_plan });
+      const nested     = evt.result as AgentResult | undefined;
+      const threadIdV  = (nested?.thread_id  ?? evt.thread_id)  as string;
+      const actionPlan = (nested?.action_plan ?? evt.action_plan) as AgentResult["action_plan"];
+      const text       = (nested?.text        ?? evt.text        ?? "") as string;
+
+      threadId.current = threadIdV ?? threadId.current;
+      if (threadIdV && actionPlan) {
+        setPendingAction({ thread_id: threadIdV, action_plan: actionPlan });
       }
+      const result: AgentResult = nested ?? {
+        thread_id: threadIdV, text, template_type: "text", action_plan: actionPlan,
+      };
       setMessages((prev: Message[]) =>
-        prev.map((m) => m.id === asstId ? { ...m, text: result.text, result, pending: false } : m)
+        prev.map((m) => m.id === asstId ? { ...m, text, result, pending: false } : m)
       );
       setProgress([]);
     }
+
     if (type === "action_result") {
-      const result = evt.result as AgentResult;
+      const nested = evt.result as AgentResult | undefined;
+      const result: AgentResult = nested ?? {
+        thread_id:     threadId.current ?? "",
+        text:          (evt.text ?? "Action completed.") as string,
+        template_type: (evt.template_type as AgentResult["template_type"]) ?? "text",
+      };
       setMessages((prev: Message[]) =>
         prev.map((m) => m.id === asstId ? { ...m, text: result.text, result, pending: false } : m)
       );
       setPendingAction(null);
       setProgress([]);
-      onActionCompleted?.((result as AgentResult & { action_type?: string }).action_type);
+      onActionCompleted?.(
+        (evt.action_type ?? (result as AgentResult & { action_type?: string }).action_type) as string
+      );
     }
+
     if (type === "error") {
       setMessages((prev: Message[]) =>
         prev.map((m) =>
-          m.id === asstId ? { ...m, text: (evt.message as string) ?? "Error", pending: false } : m
+          m.id === asstId
+            ? { ...m, text: (evt.error ?? evt.message ?? "Error") as string, pending: false }
+            : m
         )
       );
       setProgress([]);

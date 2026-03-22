@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useCallback, useContext, useMemo } from "react";
+import { createContext, useCallback, useContext, useMemo, useState, useEffect, useRef } from "react";
 import {
   AssistantRuntimeProvider,
   useExternalStoreRuntime,
@@ -54,20 +54,56 @@ function toThreadMessageLike(msg: Message): ThreadMessageLike {
   return base;
 }
 
-// ─── Typing dots ──────────────────────────────────────────────────────────────
+// ─── Typing dots (ChatGPT-style wave) ─────────────────────────────────────────
 
 function ThinkingDots() {
   return (
-    <div className="flex gap-1.5 items-center px-1 py-1">
+    <div className="flex gap-[5px] items-end px-1 py-2" aria-label="Thinking…">
       {[0, 1, 2].map((i) => (
         <span
           key={i}
-          className="w-2 h-2 rounded-full bg-gray-400 dark:bg-gray-500 animate-pulse-dot"
-          style={{ animationDelay: `${i * 200}ms` }}
+          className="w-[7px] h-[7px] rounded-full bg-gray-400 dark:bg-gray-500 animate-dot-wave"
+          style={{ animationDelay: `${i * 160}ms` }}
         />
       ))}
     </div>
   );
+}
+
+// ─── Typewriter hook ──────────────────────────────────────────────────────────
+
+function useTypewriter(fullText: string, isRunning: boolean): string {
+  // Initialise: if message already complete (e.g. history), show immediately
+  const [displayed, setDisplayed] = useState(() => isRunning ? "" : fullText);
+  const frameRef    = useRef<number>(0);
+  const posRef      = useRef(isRunning ? 0 : fullText.length);
+  const prevText    = useRef(isRunning ? "" : fullText);
+
+  useEffect(() => {
+    if (isRunning) {
+      // Reset for the next incoming text
+      cancelAnimationFrame(frameRef.current);
+      setDisplayed("");
+      posRef.current  = 0;
+      prevText.current = "";
+      return;
+    }
+    if (!fullText || fullText === prevText.current) return;
+    prevText.current = fullText;
+    posRef.current   = 0;
+
+    const tick = () => {
+      posRef.current = Math.min(posRef.current + 5, fullText.length);
+      setDisplayed(fullText.slice(0, posRef.current));
+      if (posRef.current < fullText.length) {
+        frameRef.current = requestAnimationFrame(tick);
+      }
+    };
+    frameRef.current = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(frameRef.current);
+  }, [fullText, isRunning]);
+
+  return displayed;
 }
 
 // ─── Inline markdown ──────────────────────────────────────────────────────────
@@ -108,14 +144,17 @@ function AssistantMessage() {
   const msg              = useMessage();
   const { pendingAction, confirmAction } = useContext(ActionCtx);
 
-  const custom   = msg.metadata?.custom as { result: AgentResult | null; isPending: boolean } | undefined;
-  const result   = custom?.result;
+  const custom    = msg.metadata?.custom as { result: AgentResult | null; isPending: boolean } | undefined;
+  const result    = custom?.result;
   const isRunning = msg.status?.type === "running";
 
-  const text = msg.content
+  const fullText = msg.content
     .filter((p) => p.type === "text")
     .map((p) => (p as { type: "text"; text: string }).text)
     .join("");
+
+  // Typewriter: animates text character-by-character when a response arrives
+  const displayText = useTypewriter(fullText, isRunning);
 
   const showActionCard =
     !!result?.action_plan &&
@@ -129,16 +168,20 @@ function AssistantMessage() {
       </div>
 
       <div className="flex-1 max-w-[88%] flex flex-col gap-2 min-w-0">
-        {isRunning && !text ? (
+        {/* Thinking dots while waiting for first token */}
+        {isRunning && !fullText && (
           <div className="px-3.5 py-2 rounded-2xl rounded-tl-sm bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 w-fit">
             <ThinkingDots />
           </div>
-        ) : text ? (
+        )}
+
+        {/* Typewriter text bubble */}
+        {displayText && (
           <div
             className="px-3.5 py-2 rounded-2xl rounded-tl-sm text-sm leading-relaxed bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 text-gray-800 dark:text-gray-200"
-            dangerouslySetInnerHTML={{ __html: renderMarkdown(text) }}
+            dangerouslySetInnerHTML={{ __html: renderMarkdown(displayText) }}
           />
-        ) : null}
+        )}
 
         {result && !isRunning && (
           <div className="w-full">
