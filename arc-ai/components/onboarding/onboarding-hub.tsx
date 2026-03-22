@@ -303,13 +303,6 @@ export function OnboardingHub() {
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-950">
-      {/* Header */}
-      <div className="bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800 px-6 py-4 flex items-center gap-4">
-        <Link href="/" className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition-colors">
-          <ArrowLeft className="w-5 h-5" />
-        </Link>
-      </div>
-
       <div className="max-w-4xl mx-auto px-6 py-12">
         {/* Tabs */}
         <div className="flex gap-1 p-1 bg-gray-100 dark:bg-gray-800 rounded-xl w-fit mb-8">
