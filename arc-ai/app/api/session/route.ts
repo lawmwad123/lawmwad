@@ -12,7 +12,7 @@ export async function POST(req: NextRequest) {
 
     if (vertical) {
       url     = `${DEMO_SERVICE}/session/sandbox/${vertical}`;
-      payload = {};
+      payload = { vertical };  // demo-service requires vertical in body too
     } else if (connection_string) {
       url     = `${DEMO_SERVICE}/session/connect`;
       payload = { connection_string };
