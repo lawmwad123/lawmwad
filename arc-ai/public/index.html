@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Arc AI — The AI Layer for Your Entire Organization</title>
+  <meta name="description" content="Arc AI lets every person in your organization ask questions, understand data, and take action through plain language. Built for banking, healthcare, education, retail, and beyond.">
+  <link rel="icon" type="image/png" href="assets/images/logo-removebg-preview.png">
+  <link rel="apple-touch-icon" href="assets/images/logo-removebg-preview.png">
+  <meta name="theme-color" content="#07070D">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://ai.lawmwad.com/">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://ai.lawmwad.com/">
+  <meta property="og:title" content="Arc AI — The AI Layer for Your Entire Organization">
+  <meta property="og:description" content="Arc AI lets every person in your organization ask questions, understand data, and take action through plain language. Built for banking, healthcare, education, retail, and beyond.">
+  <meta property="og:image" content="https://ai.lawmwad.com/assets/images/logo-removebg-preview.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Arc AI — The AI Layer for Your Entire Organization">
+  <meta name="twitter:description" content="Arc AI lets every person in your organization ask questions, understand data, and take action through plain language.">
+  <meta name="twitter:image" content="https://ai.lawmwad.com/assets/images/logo-removebg-preview.png">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Poppins:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+
+  <!-- ======== NAVIGATION ======== -->
+  <nav class="nav" role="navigation" aria-label="Main navigation">
+    <div class="nav__inner">
+      <a href="index.html" class="nav__logo">
+        <div class="nav__logo-icon" aria-hidden="true">
+          <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M18 4L32 28H4L18 4Z" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"/>
+            <path d="M12 20H24" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <span class="nav__logo-text">Arc <span>AI</span></span>
+      </a>
+      <div class="nav__links">
+        <a href="#features" class="nav__link">Product</a>
+        <a href="#industries" class="nav__link">Industries</a>
+        <a href="#security" class="nav__link">Security</a>
+        <a href="#integrations" class="nav__link">Integrations</a>
+        <a href="#demo" class="btn btn--primary btn--sm nav__cta">Request Demo</a>
+      </div>
+      <button class="nav__toggle" aria-label="Toggle navigation menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- ======== HERO ======== -->
+  <section class="hero">
+    <div class="hero__glow hero__glow--1" aria-hidden="true"></div>
+    <div class="hero__glow hero__glow--2" aria-hidden="true"></div>
+    <div class="container hero__inner">
+
+      <!-- Left: Headline -->
+      <div class="hero__content">
+        <div class="hero__badge">
+          <span class="hero__badge-dot"></span>
+          A product by Lawmwad Engineering Lab
+        </div>
+        <h1 class="hero__title">
+          Every system<br>in your organization,<br>
+          <span class="text-gradient">finally answerable.</span>
+        </h1>
+        <p class="hero__subtitle">
+          Arc AI sits between your people and your systems. Ask in plain language. Understand visually. Act within your authority. Every answer logged, every action confirmed.
+        </p>
+        <div class="btn-group">
+          <a href="#demo" class="btn btn--primary btn--lg">Request a Demo</a>
+          <a href="#features" class="btn btn--outline btn--lg">
+            See How It Works
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+        </div>
+        <div class="hero__meta">
+          <span>Works with your existing systems</span>
+          <span class="hero__meta-sep">&middot;</span>
+          <span>No SQL or reports needed</span>
+          <span class="hero__meta-sep">&middot;</span>
+          <span>Role-based access enforced</span>
+        </div>
+      </div>
+
+      <!-- Right: Terminal Demo -->
+      <div class="hero__terminal" aria-hidden="true">
+        <div class="terminal">
+          <div class="terminal__header">
+            <div class="terminal__dots">
+              <span></span><span></span><span></span>
+            </div>
+            <span class="terminal__title">Arc AI</span>
+            <span class="terminal__badge" id="terminal-industry-badge">Banking</span>
+          </div>
+          <div class="terminal__body">
+            <div class="terminal__history" id="terminal-history"></div>
+            <div class="terminal__input-row">
+              <span class="terminal__prompt">&#8250;</span>
+              <span class="terminal__cursor-text" id="terminal-query"></span>
+              <span class="terminal__cursor" id="terminal-cursor"></span>
+            </div>
+            <div class="terminal__thinking" id="terminal-thinking">
+              <span></span><span></span><span></span>
+            </div>
+            <div class="terminal__response" id="terminal-response"></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ======== PROBLEM STRIP ======== -->
+  <section class="problem-strip">
+    <div class="container">
+      <div class="problem-strip__inner reveal">
+        <div class="problem-strip__col">
+          <span class="problem-strip__label problem-strip__label--before">Before Arc AI</span>
+          <div class="problem-strip__items">
+            <span>Open 5 different screens</span>
+            <span>Run a report and wait</span>
+            <span>Ask a specialist</span>
+            <span>Search through logs manually</span>
+          </div>
+        </div>
+        <div class="problem-strip__arrow" aria-hidden="true">
+          <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </div>
+        <div class="problem-strip__col">
+          <span class="problem-strip__label problem-strip__label--after">With Arc AI</span>
+          <div class="problem-strip__items">
+            <span>Ask in plain language</span>
+            <span>Get an instant, accurate answer</span>
+            <span>Take action in one sentence</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======== FEATURES: What it does ======== -->
+  <section class="section" id="features">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="section-label">What It Does</span>
+        <h2>Five capabilities. One interface.</h2>
+        <p>From simple lookups to complex decisions — Arc AI handles every interaction your organization needs.</p>
+      </div>
+      <div class="features-grid">
+
+        <div class="feature-card feature-card--wide reveal reveal-delay-1">
+          <div class="feature-card__icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          </div>
+          <div class="feature-card__body">
+            <h3>Talk to your data</h3>
+            <p>Ask any question in plain language and get a real answer — a table, a number, a chart, a summary. Which customers have overdue payments? What is our inventory by warehouse? No SQL. No reports. No waiting.</p>
+            <div class="feature-card__query">
+              <span class="feature-card__query-prompt">&#8250;</span>
+              <span>"Which customers have made three failed transactions this week?"</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="feature-card reveal reveal-delay-2">
+          <div class="feature-card__icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          </div>
+          <div class="feature-card__body">
+            <h3>See and understand</h3>
+            <p>Upload an image and your organization responds to it. Show a face — find the employee or customer. Show a document — extract and act on the data. Vision is just another input.</p>
+            <div class="feature-card__query">
+              <span class="feature-card__query-prompt">&#8250;</span>
+              <span>"Show face &rarr; find employee &rarr; cross-check access log"</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="feature-card reveal reveal-delay-3">
+          <div class="feature-card__icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+          </div>
+          <div class="feature-card__body">
+            <h3>Take action</h3>
+            <p>Not just answers — outcomes. Approve a loan. Flag a transaction. Enroll a student. Every action is controlled by role, confirmed before execution, and logged permanently.</p>
+            <div class="feature-card__query">
+              <span class="feature-card__query-prompt">&#8250;</span>
+              <span>"Approve loan #4471 and notify the customer"</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="feature-card reveal reveal-delay-1">
+          <div class="feature-card__icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          </div>
+          <div class="feature-card__body">
+            <h3>Detect before you ask</h3>
+            <p>Fraud patterns. Unusual spending. Students falling behind. Stock disappearing. The system watches continuously and surfaces what needs attention — proactively, not after damage is done.</p>
+            <div class="feature-card__query feature-card__query--alert">
+              <span class="feature-card__query-prompt">!</span>
+              <span>Alert: "3 accounts with unusual same-day cross-branch withdrawals"</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="feature-card reveal reveal-delay-2">
+          <div class="feature-card__icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4"/><path d="M12 16h.01"/></svg>
+          </div>
+          <div class="feature-card__body">
+            <h3>Get advice, not just data</h3>
+            <p>"Should we approve this loan?" "Is this student at risk of dropping out?" "Which supplier should we prioritize?" It reasons over your own data and answers with context, not just numbers.</p>
+            <div class="feature-card__query">
+              <span class="feature-card__query-prompt">&#8250;</span>
+              <span>"Should we approve this loan?" &rarr; Risk analysis + recommendation</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ======== INDUSTRIES: Who it works for ======== -->
+  <section class="section section--alt" id="industries">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="section-label">Industries</span>
+        <h2>Built for every role, every industry.</h2>
+        <p>Every role sees only what they're permitted to. Every action is within their authority. Every interaction is logged.</p>
+      </div>
+      <div class="roles-grid">
+
+        <div class="role-card reveal reveal-delay-1">
+          <div class="role-card__header">
+            <div class="role-card__icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+            </div>
+            <span class="role-card__industry role-card__industry--banking">Banking</span>
+          </div>
+          <h3>Bank Manager</h3>
+          <ul class="role-card__list">
+            <li>Full customer risk profile in one question</li>
+            <li>Cash position across all branches instantly</li>
+            <li>Loan approval workflows from a prompt</li>
+          </ul>
+        </div>
+
+        <div class="role-card reveal reveal-delay-2">
+          <div class="role-card__header">
+            <div class="role-card__icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.99 12 19.79 19.79 0 0 1 1.93 3.18 2 2 0 0 1 3.9 1h3a2 2 0 0 1 2 1.72c.13 1 .4 1.97.76 2.91a2 2 0 0 1-.45 2.11L8.09 8.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.94.36 1.91.63 2.91.76A2 2 0 0 1 22 16.92z"/></svg>
+            </div>
+            <span class="role-card__industry role-card__industry--banking">Banking</span>
+          </div>
+          <h3>Customer Service Rep</h3>
+          <ul class="role-card__list">
+            <li>Instant account lookup — no screen switching</li>
+            <li>Transaction history on demand</li>
+            <li>Issue resolution in one conversation</li>
+          </ul>
+        </div>
+
+        <div class="role-card reveal reveal-delay-3">
+          <div class="role-card__header">
+            <div class="role-card__icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+            </div>
+            <span class="role-card__industry role-card__industry--health">Healthcare</span>
+          </div>
+          <h3>Hospital Admin</h3>
+          <ul class="role-card__list">
+            <li>Patient records asked, not searched</li>
+            <li>Appointment gaps and no-shows surfaced</li>
+            <li>Billing status without running reports</li>
+          </ul>
+        </div>
+
+        <div class="role-card reveal reveal-delay-4">
+          <div class="role-card__header">
+            <div class="role-card__icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+            </div>
+            <span class="role-card__industry role-card__industry--edu">Education</span>
+          </div>
+          <h3>School Principal</h3>
+          <ul class="role-card__list">
+            <li>Enrollment, fees, results answered in seconds</li>
+            <li>Teacher performance visible without IT</li>
+            <li>At-risk students flagged automatically</li>
+          </ul>
+        </div>
+
+        <div class="role-card reveal reveal-delay-1">
+          <div class="role-card__header">
+            <div class="role-card__icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            </div>
+            <span class="role-card__industry role-card__industry--hr">HR</span>
+          </div>
+          <h3>HR Officer</h3>
+          <ul class="role-card__list">
+            <li>Payroll and leave status from one prompt</li>
+            <li>Compliance checks without spreadsheets</li>
+            <li>Headcount and department data instantly</li>
+          </ul>
+        </div>
+
+        <div class="role-card reveal reveal-delay-2">
+          <div class="role-card__header">
+            <div class="role-card__icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+            </div>
+            <span class="role-card__industry role-card__industry--finance">Finance</span>
+          </div>
+          <h3>Accountant</h3>
+          <ul class="role-card__list">
+            <li>Reconciliation gaps spotted automatically</li>
+            <li>Budget vs. actual without exporting</li>
+            <li>Expense anomalies flagged proactively</li>
+          </ul>
+        </div>
+
+        <div class="role-card reveal reveal-delay-3">
+          <div class="role-card__header">
+            <div class="role-card__icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+            </div>
+            <span class="role-card__industry role-card__industry--retail">Retail</span>
+          </div>
+          <h3>Store Manager</h3>
+          <ul class="role-card__list">
+            <li>Stock levels and sales trends — no dashboard</li>
+            <li>Supplier performance compared instantly</li>
+            <li>Theft and shrinkage patterns detected</li>
+          </ul>
+        </div>
+
+        <div class="role-card reveal reveal-delay-4">
+          <div class="role-card__header">
+            <div class="role-card__icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            </div>
+            <span class="role-card__industry role-card__industry--security">Security</span>
+          </div>
+          <h3>Security Officer</h3>
+          <ul class="role-card__list">
+            <li>Identify a person from an image</li>
+            <li>Cross-check against all organizational records</li>
+            <li>Flag or clear — action logged permanently</li>
+          </ul>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ======== HOW IT CONNECTS ======== -->
+  <section class="section" id="integrations">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="section-label">Integration</span>
+        <h2>One layer. Every system.</h2>
+        <p>Arc AI doesn't replace your systems. It connects to them — learning their structure, understanding their data, and making them accessible through natural language, voice, or image.</p>
+      </div>
+
+      <div class="integration-diagram reveal">
+        <div class="integration-diagram__systems">
+          <div class="integration-system">
+            <div class="integration-system__icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+            </div>
+            <span>Banking Software</span>
+          </div>
+          <div class="integration-system">
+            <div class="integration-system__icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+            </div>
+            <span>Hospital Records</span>
+          </div>
+          <div class="integration-system">
+            <div class="integration-system__icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+            </div>
+            <span>School Database</span>
+          </div>
+          <div class="integration-system">
+            <div class="integration-system__icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
+            </div>
+            <span>Accounting Platform</span>
+          </div>
+          <div class="integration-system">
+            <div class="integration-system__icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+            </div>
+            <span>HR Platform</span>
+          </div>
+          <div class="integration-system">
+            <div class="integration-system__icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+            </div>
+            <span>Any Custom System</span>
+          </div>
+        </div>
+
+        <div class="integration-diagram__center">
+          <div class="integration-diagram__arc">
+            <div class="integration-diagram__arc-pulse" aria-hidden="true"></div>
+            <span class="integration-diagram__arc-name">Arc AI</span>
+          </div>
+        </div>
+
+        <div class="integration-diagram__outputs">
+          <div class="integration-output">
+            <div class="integration-output__icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            </div>
+            <span>Natural Language</span>
+          </div>
+          <div class="integration-output">
+            <div class="integration-output__icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+            </div>
+            <span>Image &amp; Vision</span>
+          </div>
+          <div class="integration-output">
+            <div class="integration-output__icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+            </div>
+            <span>Voice Commands</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="integration-note reveal">
+        <p>Plug in your systems. Arc AI learns their structure, understands their data, and makes them accessible to every authorized person in your organization — without changing a line of existing code.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======== PRINCIPLES / SECURITY ======== -->
+  <section class="section section--alt" id="security">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="section-label">Principles</span>
+        <h2>Built on three principles.</h2>
+        <p>Every decision in Arc AI traces back to security, scalability, and trust. No exceptions.</p>
+      </div>
+      <div class="principles-grid">
+
+        <div class="principle-card reveal reveal-delay-1">
+          <div class="principle-card__number">01</div>
+          <div class="principle-card__icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          </div>
+          <h3>Secure</h3>
+          <p>Role-based access enforced at every query and every action. Nothing leaks across organizations. Every mutation is confirmed, logged, and reversible.</p>
+          <ul class="principle-card__features">
+            <li>Role-based access at query level</li>
+            <li>Multi-tenant data isolation</li>
+            <li>Full audit trail for every action</li>
+            <li>Confirmation required before mutations</li>
+          </ul>
+        </div>
+
+        <div class="principle-card reveal reveal-delay-2">
+          <div class="principle-card__number">02</div>
+          <div class="principle-card__icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+          </div>
+          <h3>Scalable</h3>
+          <p>One instance serves a single school or a bank with a thousand branches. Multi-tenant by design, built to grow with your organization without re-architecting.</p>
+          <ul class="principle-card__features">
+            <li>Single school to enterprise-scale</li>
+            <li>Multi-tenant architecture</li>
+            <li>Add new systems without downtime</li>
+            <li>Consistent performance at any scale</li>
+          </ul>
+        </div>
+
+        <div class="principle-card reveal reveal-delay-3">
+          <div class="principle-card__number">03</div>
+          <div class="principle-card__icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+          </div>
+          <h3>Trustworthy</h3>
+          <p>It tells you what it found and where. It asks before it acts. It remembers what it's done. It never oversteps what your role allows.</p>
+          <ul class="principle-card__features">
+            <li>Sources cited with every answer</li>
+            <li>Confirmation dialogs before every action</li>
+            <li>Complete interaction history</li>
+            <li>No role boundary violations, ever</li>
+          </ul>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ======== DEMO CTA ======== -->
+  <section class="cta-section" id="demo">
+    <div class="cta-section__glow" aria-hidden="true"></div>
+    <div class="container">
+      <div class="cta-section__inner reveal">
+        <div class="cta-section__text">
+          <span class="section-label">Get Started</span>
+          <h2>See Arc AI in your organization.</h2>
+          <p>We'll walk you through how Arc AI connects to your existing systems, what your team can do on day one, and what a rollout looks like in practice.</p>
+          <ul class="cta-section__promises">
+            <li>
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+              No commitment required
+            </li>
+            <li>
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+              Response within 24 hours
+            </li>
+            <li>
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+              Live demo with your own data
+            </li>
+          </ul>
+        </div>
+        <form class="demo-form" id="demo-form" action="#" novalidate>
+          <div class="form-group">
+            <label for="demo-name">Full Name</label>
+            <input type="text" id="demo-name" name="name" placeholder="Your name" autocomplete="name" required>
+          </div>
+          <div class="form-group">
+            <label for="demo-email">Work Email</label>
+            <input type="email" id="demo-email" name="email" placeholder="you@company.com" autocomplete="email" required>
+          </div>
+          <div class="form-group">
+            <label for="demo-org">Organization</label>
+            <input type="text" id="demo-org" name="org" placeholder="Company or institution name" required>
+          </div>
+          <div class="form-group">
+            <label for="demo-whatsapp">WhatsApp Number</label>
+            <input type="tel" id="demo-whatsapp" name="whatsapp" placeholder="+254 700 000 000" autocomplete="tel" required>
+          </div>
+          <div class="form-group">
+            <label for="demo-industry">Industry</label>
+            <select id="demo-industry" name="industry" required>
+              <option value="" disabled selected>Select your industry</option>
+              <option>Banking &amp; Finance</option>
+              <option>Healthcare</option>
+              <option>Education</option>
+              <option>Retail &amp; Inventory</option>
+              <option>HR &amp; Payroll</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <button type="submit" class="btn btn--primary btn--lg demo-form__btn">Request a Demo &rarr;</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======== FOOTER ======== -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__grid">
+        <div class="footer__brand">
+          <a href="index.html" class="footer__logo-link">
+            <div class="footer__logo-icon">
+              <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M18 4L32 28H4L18 4Z" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"/>
+                <path d="M12 20H24" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <span class="footer__logo-text">Arc <strong>AI</strong></span>
+          </a>
+          <p>The AI layer that makes every system in your organization answerable to every person — securely, instantly, at scale.</p>
+          <p class="footer__parent">A product by <a href="https://lawmwad.com">Lawmwad Engineering Lab</a></p>
+        </div>
+        <div>
+          <h4 class="footer__heading">Product</h4>
+          <ul class="footer__links">
+            <li><a href="#features">Features</a></li>
+            <li><a href="#industries">Industries</a></li>
+            <li><a href="#integrations">Integrations</a></li>
+            <li><a href="#security">Security</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="footer__heading">Company</h4>
+          <ul class="footer__links">
+            <li><a href="https://lawmwad.com">Lawmwad Lab</a></li>
+            <li><a href="#demo">Request Demo</a></li>
+            <li><a href="mailto:ai@arcenglab.com">Contact</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="footer__heading">Connect</h4>
+          <ul class="footer__links">
+            <li><a href="#">LinkedIn</a></li>
+            <li><a href="#">Twitter / X</a></li>
+            <li><a href="#">GitHub</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        <span>&copy; 2026 Arc AI by Lawmwad. All rights reserved.</span>
+        <div class="footer__socials">
+          <a href="#" aria-label="GitHub">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
+          </a>
+          <a href="#" aria-label="LinkedIn">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+          </a>
+          <a href="#" aria-label="Twitter/X">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="assets/js/main.js"></script>
+</body>
+</html>

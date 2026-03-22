@@ -1,11 +1,5 @@
 {
-  "buildCommand": "",
-  "outputDirectory": ".",
-  "framework": null,
-  "functions": {
-    "api/*.js": {
-      "memory": 128,
-      "maxDuration": 10
-    }
-  }
+  "framework": "nextjs",
+  "buildCommand": "npm run build",
+  "outputDirectory": ".next"
 }
