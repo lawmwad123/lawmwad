@@ -21,6 +21,19 @@ export interface ColDef {
   primary?: boolean;
 }
 
+export type EditableInputType = "text" | "number" | "date" | "boolean" | "select" | "textarea";
+
+export interface EditableField {
+  /** Actual DB column name used in INSERT/UPDATE */
+  key:          string;
+  label:        string;
+  inputType:    EditableInputType;
+  required?:    boolean;
+  placeholder?: string;
+  /** For select inputs: list of allowed values */
+  options?:     string[];
+}
+
 export interface EntityView {
   id:          string;
   label:       string;
@@ -31,6 +44,12 @@ export interface EntityView {
   /** action_types that should trigger a data refresh */
   refreshOn:   string[];
   emptyLabel:  string;
+  /** Base table for INSERT/UPDATE/DELETE (schema.table). Absent = read-only. */
+  table?:         string;
+  /** Primary key column. Defaults to "id". */
+  primaryKey?:    string;
+  /** Fields shown in the Create/Edit form. */
+  editableFields?: EditableField[];
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -85,6 +104,13 @@ const ECOMMERCE_VIEWS: EntityView[] = [
     ],
     refreshOn:  ["update_stock"],
     emptyLabel: "No products found",
+    table:      "ecommerce.products",
+    editableFields: [
+      { key: "name",      label: "Product Name",    inputType: "text",   required: true },
+      { key: "price",     label: "Price",           inputType: "number", required: true, placeholder: "0.00" },
+      { key: "stock_qty", label: "Stock Quantity",  inputType: "number", required: true },
+      { key: "is_active", label: "Active",          inputType: "boolean" },
+    ],
   },
   {
     id:    "orders",
@@ -126,6 +152,12 @@ const ECOMMERCE_VIEWS: EntityView[] = [
     ],
     refreshOn:  [],
     emptyLabel: "No customers found",
+    table:      "ecommerce.customers",
+    editableFields: [
+      { key: "name",  label: "Full Name", inputType: "text", required: true },
+      { key: "email", label: "Email",     inputType: "text", required: true, placeholder: "name@example.com" },
+      { key: "city",  label: "City",      inputType: "text" },
+    ],
   },
 ];
 
@@ -151,6 +183,13 @@ const HOSPITAL_VIEWS: EntityView[] = [
     ],
     refreshOn:  ["discharge_patient"],
     emptyLabel: "No patients found",
+    table:      "hospital.patients",
+    editableFields: [
+      { key: "name",       label: "Full Name",   inputType: "text",   required: true },
+      { key: "gender",     label: "Gender",      inputType: "select", required: true, options: ["Male", "Female", "Other"] },
+      { key: "blood_type", label: "Blood Type",  inputType: "select", options: ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"] },
+      { key: "district",   label: "District",    inputType: "text" },
+    ],
   },
   {
     id:    "appointments",
@@ -258,6 +297,12 @@ const BANK_VIEWS: EntityView[] = [
     ],
     refreshOn:  [],
     emptyLabel: "No members found",
+    table:      "bank.members",
+    editableFields: [
+      { key: "name",   label: "Full Name", inputType: "text", required: true },
+      { key: "phone",  label: "Phone",     inputType: "text", required: true, placeholder: "+256..." },
+      { key: "status", label: "Status",    inputType: "select", options: ["active", "inactive", "suspended"] },
+    ],
   },
 ];
 
@@ -284,6 +329,13 @@ const HR_VIEWS: EntityView[] = [
     ],
     refreshOn:  [],
     emptyLabel: "No employees found",
+    table:      "hr.employees",
+    editableFields: [
+      { key: "name",      label: "Full Name",  inputType: "text",   required: true },
+      { key: "job_title", label: "Job Title",  inputType: "text",   required: true },
+      { key: "salary",    label: "Salary",     inputType: "number", placeholder: "0" },
+      { key: "status",    label: "Status",     inputType: "select", options: ["active", "inactive", "suspended"] },
+    ],
   },
   {
     id:    "leave_requests",
@@ -351,6 +403,13 @@ const NGO_VIEWS: EntityView[] = [
     ],
     refreshOn:  ["flag_beneficiary"],
     emptyLabel: "No beneficiaries found",
+    table:      "ngo.beneficiaries",
+    editableFields: [
+      { key: "name",                label: "Full Name",          inputType: "text",    required: true },
+      { key: "district",            label: "District",           inputType: "text" },
+      { key: "vulnerability_score", label: "Vulnerability Score", inputType: "number", placeholder: "0–10" },
+      { key: "needs_followup",      label: "Needs Follow-up",    inputType: "boolean" },
+    ],
   },
   {
     id:    "projects",
@@ -512,6 +571,38 @@ function buildColDefs(columns: DbColumn[]): ColDef[] {
   }));
 }
 
+// Columns to skip in the Create/Edit form
+const SKIP_EDITABLE_COLS = new Set([
+  "id", "created_at", "updated_at", "deleted_at", "registered_at",
+  "createdAt", "updatedAt", "deletedAt", "registeredAt",
+]);
+const SKIP_EDITABLE_SUFFIXES = ["_at", "_id", "At", "Id"];
+
+function buildEditableFields(columns: DbColumn[]): EditableField[] {
+  return columns
+    .filter((c) => {
+      if (SKIP_EDITABLE_COLS.has(c.name)) return false;
+      if (SKIP_EDITABLE_SUFFIXES.some((s) => c.name.endsWith(s))) return false;
+      return true;
+    })
+    .slice(0, 8)
+    .map((c): EditableField => {
+      const lower = c.type.toLowerCase();
+      let inputType: EditableInputType = "text";
+      if (lower === "boolean") inputType = "boolean";
+      else if (lower.includes("int") || lower.includes("numeric") || lower.includes("float") ||
+               lower.includes("decimal") || lower.includes("double") || lower.includes("real")) inputType = "number";
+      else if (lower.includes("date") || lower.includes("timestamp")) inputType = "date";
+
+      const label = c.name
+        .replace(/_/g, " ")
+        .replace(/([a-z])([A-Z])/g, "$1 $2")
+        .replace(/\b\w/g, (l) => l.toUpperCase());
+
+      return { key: c.name, label, inputType, required: !c.nullable };
+    });
+}
+
 function buildOrderBy(columns: DbColumn[]): string {
   // Prefer createdAt DESC, then updatedAt DESC, then no ORDER BY
   const names = columns.map((c) => c.name);
@@ -550,6 +641,9 @@ export function buildDynamicViews(
         ? colDefs.map((c) => `"${c.key}"`).join(", ")
         : "*";
 
+      const editFields = buildEditableFields(cols);
+      const mutateTable = schemaName === "public" ? tableName : `${schemaName}.${tableName}`;
+
       return {
         id:         tableName,
         label:      tableName,          // exact DB table name
@@ -558,6 +652,9 @@ export function buildDynamicViews(
         columns:    colDefs,
         refreshOn:  [],
         emptyLabel: `No records in ${tableName}`,
+        table:          editFields.length > 0 ? mutateTable : undefined,
+        primaryKey:     "id",
+        editableFields: editFields.length > 0 ? editFields : undefined,
       };
     });
 }

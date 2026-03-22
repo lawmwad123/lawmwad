@@ -4,10 +4,11 @@ import {
   useState, useEffect, useCallback, useRef,
   forwardRef, useImperativeHandle,
 } from "react";
-import { RefreshCw, Sparkles } from "lucide-react";
+import { RefreshCw, Sparkles, Plus } from "lucide-react";
 import type { Session } from "@/lib/types";
 import { getViews, buildDynamicViews, type EntityView } from "@/lib/vertical-views";
 import { EntityTable } from "./entity-table";
+import { RecordDrawer } from "./record-drawer";
 import { VERTICAL_ICONS, VERTICAL_COLORS } from "@/lib/vertical-config";
 import { cn } from "@/lib/cn";
 
@@ -44,6 +45,10 @@ export const SystemPanel = forwardRef<SystemPanelHandle, Props>(function SystemP
   const [highlightIds, setHighlightIds]   = useState<Set<string | number>>(new Set());
   const [justUpdated,  setJustUpdated]    = useState(false);
   const prevIdsRef = useRef<Set<string | number>>(new Set());
+
+  // CRUD drawer state
+  const [drawerMode,  setDrawerMode]  = useState<"create" | "edit" | null>(null);
+  const [editingRow,  setEditingRow]  = useState<Record<string, unknown> | null>(null);
 
   const activeView: EntityView | undefined = views.find((v) => v.id === activeId);
 
@@ -103,6 +108,31 @@ export const SystemPanel = forwardRef<SystemPanelHandle, Props>(function SystemP
       setLoading(false);
     }
   }, [session.session_id]);
+
+  // ── CRUD helpers ───────────────────────────────────────────────────────────
+
+  const mutate = useCallback(async (
+    operation: "insert" | "update" | "delete",
+    data: Record<string, unknown> = {},
+    rowId?: string | number,
+  ) => {
+    if (!activeView?.table) throw new Error("No table configured for this entity.");
+    const res = await fetch("/api/data/mutate", {
+      method:  "POST",
+      headers: { "Content-Type": "application/json" },
+      body:    JSON.stringify({
+        session_id:  session.session_id,
+        operation,
+        table:       activeView.table,
+        primary_key: activeView.primaryKey ?? "id",
+        data,
+        where_id:    rowId ?? null,
+      }),
+    });
+    const json = await res.json() as { error?: string };
+    if (!res.ok) throw new Error(json.error ?? "Mutation failed.");
+    return json;
+  }, [session.session_id, activeView]);
 
   // Initial load + when active entity changes
   useEffect(() => {
@@ -198,11 +228,22 @@ export const SystemPanel = forwardRef<SystemPanelHandle, Props>(function SystemP
           <span className="text-xs text-gray-400">
             {loading ? "Loading…" : `${rows.length} record${rows.length !== 1 ? "s" : ""}`}
           </span>
-          {lastRefreshed && (
-            <span className="text-[10px] text-gray-300 dark:text-gray-600">
-              {lastRefreshed.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
-            </span>
-          )}
+          <div className="flex items-center gap-2">
+            {lastRefreshed && (
+              <span className="text-[10px] text-gray-300 dark:text-gray-600">
+                {lastRefreshed.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
+              </span>
+            )}
+            {activeView?.editableFields?.length && (
+              <button
+                onClick={() => { setEditingRow(null); setDrawerMode("create"); }}
+                className="flex items-center gap-1 px-2 py-1 text-[11px] font-medium text-white bg-brand-600 hover:bg-brand-700 rounded-md transition-colors"
+              >
+                <Plus className="w-3 h-3" />
+                Add
+              </button>
+            )}
+          </div>
         </div>
 
         {activeView ? (
@@ -211,6 +252,15 @@ export const SystemPanel = forwardRef<SystemPanelHandle, Props>(function SystemP
             rows={rows}
             highlightIds={highlightIds}
             loading={loading}
+            primaryKey={activeView.primaryKey}
+            onEdit={activeView.editableFields?.length ? (row) => {
+              setEditingRow(row);
+              setDrawerMode("edit");
+            } : undefined}
+            onDelete={activeView.editableFields?.length ? async (rowId) => {
+              await mutate("delete", {}, rowId);
+              fetchData(activeView, true);
+            } : undefined}
           />
         ) : (
           <div className="flex-1 flex items-center justify-center text-gray-400 text-sm">
@@ -226,6 +276,23 @@ export const SystemPanel = forwardRef<SystemPanelHandle, Props>(function SystemP
             Changes made through the AI assistant appear here in real time.
           </p>
         </div>
+      )}
+
+      {/* CRUD drawer */}
+      {drawerMode && activeView?.editableFields && (
+        <RecordDrawer
+          entity={activeView.label}
+          mode={drawerMode}
+          fields={activeView.editableFields}
+          initial={editingRow ?? undefined}
+          onSave={async (data) => {
+            const pk = activeView.primaryKey ?? "id";
+            const rowId = editingRow?.[pk] as string | number | undefined;
+            await mutate(drawerMode === "create" ? "insert" : "update", data, rowId);
+            fetchData(activeView, true);
+          }}
+          onClose={() => setDrawerMode(null)}
+        />
       )}
     </div>
   );

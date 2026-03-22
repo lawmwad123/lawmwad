@@ -1,17 +1,21 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
+import { Pencil, Trash2, Check, X } from "lucide-react";
 import type { ColDef, ColType } from "@/lib/vertical-views";
 import { cn } from "@/lib/cn";
 
 interface Props {
-  columns:       ColDef[];
-  rows:          Record<string, unknown>[];
+  columns:      ColDef[];
+  rows:         Record<string, unknown>[];
   highlightIds?: Set<string | number>;
-  loading?:      boolean;
+  loading?:     boolean;
+  primaryKey?:  string;
+  onEdit?:      (row: Record<string, unknown>) => void;
+  onDelete?:    (rowId: string | number) => Promise<void>;
 }
 
-// ─── formatters ──────────────────────────────────────────────────────────────
+// ─── Formatters ───────────────────────────────────────────────────────────────
 
 function fmtCurrency(val: unknown): string {
   const n = Number(val);
@@ -101,8 +105,28 @@ function SkeletonRow({ cols }: { cols: number }) {
 
 // ─── Main component ───────────────────────────────────────────────────────────
 
-export function EntityTable({ columns, rows, highlightIds, loading }: Props) {
+export function EntityTable({ columns, rows, highlightIds, loading, primaryKey, onEdit, onDelete }: Props) {
   const primaryCol = useMemo(() => columns.find((c) => c.primary), [columns]);
+  const hasActions = !!(onEdit || onDelete);
+
+  // Inline delete confirmation state
+  const [deletingId,  setDeletingId]  = useState<string | number | null>(null);
+  const [deletingBusy, setDeletingBusy] = useState(false);
+
+  function getRowId(row: Record<string, unknown>, idx: number): string | number {
+    return (row[primaryKey ?? "id"] ?? row[primaryCol?.key ?? ""] ?? idx) as string | number;
+  }
+
+  async function confirmDelete(rowId: string | number) {
+    if (!onDelete) return;
+    setDeletingBusy(true);
+    try {
+      await onDelete(rowId);
+    } finally {
+      setDeletingBusy(false);
+      setDeletingId(null);
+    }
+  }
 
   return (
     <div className="flex-1 overflow-auto">
@@ -120,28 +144,33 @@ export function EntityTable({ columns, rows, highlightIds, loading }: Props) {
                 {col.label}
               </th>
             ))}
+            {hasActions && (
+              <th className="px-3 py-2.5 w-[72px]" aria-label="Actions" />
+            )}
           </tr>
         </thead>
 
         <tbody>
           {loading ? (
-            Array.from({ length: 8 }).map((_, i) => <SkeletonRow key={i} cols={columns.length} />)
+            Array.from({ length: 8 }).map((_, i) => <SkeletonRow key={i} cols={columns.length + (hasActions ? 1 : 0)} />)
           ) : rows.length === 0 ? (
             <tr>
-              <td colSpan={columns.length} className="px-4 py-12 text-center text-gray-400 text-sm">
+              <td colSpan={columns.length + (hasActions ? 1 : 0)} className="px-4 py-12 text-center text-gray-400 text-sm">
                 No data
               </td>
             </tr>
           ) : (
             rows.map((row, rowIdx) => {
-              const rowId = row.id ?? row[primaryCol?.key ?? ""] ?? rowIdx;
+              const rowId = getRowId(row, rowIdx);
               const isNew = highlightIds?.has(rowId as string | number) ?? false;
+              const isDeleting = deletingId === rowId;
+
               return (
                 <tr
                   key={rowIdx}
                   className={cn(
-                    "border-t border-gray-100 dark:border-gray-800 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors",
-                    isNew && "animate-highlight"
+                    "border-t border-gray-100 dark:border-gray-800 transition-colors group",
+                    isNew ? "animate-highlight" : "hover:bg-gray-50 dark:hover:bg-gray-800/50",
                   )}
                 >
                   {columns.map((col) => (
@@ -155,6 +184,55 @@ export function EntityTable({ columns, rows, highlightIds, loading }: Props) {
                       <CellValue type={col.type} value={row[col.key]} badges={col.badges} />
                     </td>
                   ))}
+
+                  {hasActions && (
+                    <td className="px-3 py-2 text-right">
+                      {isDeleting ? (
+                        /* Inline delete confirmation */
+                        <span className="flex items-center justify-end gap-1">
+                          <span className="text-[11px] text-red-600 dark:text-red-400 mr-1 whitespace-nowrap">Delete?</span>
+                          <button
+                            onClick={() => confirmDelete(rowId)}
+                            disabled={deletingBusy}
+                            className="p-1 rounded text-green-600 hover:bg-green-50 dark:hover:bg-green-950 disabled:opacity-40 transition-colors"
+                            title="Confirm delete"
+                          >
+                            <Check className="w-3.5 h-3.5" />
+                          </button>
+                          <button
+                            onClick={() => setDeletingId(null)}
+                            disabled={deletingBusy}
+                            className="p-1 rounded text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 disabled:opacity-40 transition-colors"
+                            title="Cancel"
+                          >
+                            <X className="w-3.5 h-3.5" />
+                          </button>
+                        </span>
+                      ) : (
+                        /* Normal hover actions */
+                        <span className="flex items-center justify-end gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                          {onEdit && (
+                            <button
+                              onClick={() => onEdit(row)}
+                              className="p-1 rounded text-gray-400 hover:text-brand-600 hover:bg-brand-50 dark:hover:bg-brand-950 transition-colors"
+                              title="Edit"
+                            >
+                              <Pencil className="w-3.5 h-3.5" />
+                            </button>
+                          )}
+                          {onDelete && (
+                            <button
+                              onClick={() => setDeletingId(rowId)}
+                              className="p-1 rounded text-gray-400 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-950 transition-colors"
+                              title="Delete"
+                            >
+                              <Trash2 className="w-3.5 h-3.5" />
+                            </button>
+                          )}
+                        </span>
+                      )}
+                    </td>
+                  )}
                 </tr>
               );
             })

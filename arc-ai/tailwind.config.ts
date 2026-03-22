@@ -38,7 +38,8 @@ const config: Config = {
         "pulse-dot":    "pulseDot 1.5s ease-in-out infinite",
         "highlight":    "highlight 2s ease-out forwards",
         "dot-wave":     "dotWave 1.4s ease-in-out infinite both",
-        "cursor-blink": "cursorBlink 1s step-end infinite",
+        "cursor-blink":    "cursorBlink 1s step-end infinite",
+        "slide-in-right":  "slideInRight 0.25s ease-out forwards",
       },
       keyframes: {
         fadeUp: {
@@ -72,6 +73,10 @@ const config: Config = {
         cursorBlink: {
           "0%, 100%": { opacity: "1" },
           "50%":      { opacity: "0" },
+        },
+        slideInRight: {
+          "0%":   { opacity: "0", transform: "translateX(20px)" },
+          "100%": { opacity: "1", transform: "translateX(0)" },
         },
       },
     },
