@@ -2,11 +2,11 @@
 
 import { useState, useRef, useCallback, useEffect } from "react";
 import type { Session, AgentResult, ProgressStep } from "@/lib/types";
-import { useSessionStore, useUIStore } from "@/lib/store";
+import { useSessionStore } from "@/lib/store";
 import { ChatHeader }  from "./chat-header";
-import { ChatSidebar } from "./chat-sidebar";
 import { AiThread }    from "./ai-thread";
 import { ProgressBar } from "./progress-bar";
+import { cn } from "@/lib/cn";
 
 export type Message = {
   id:       string;
@@ -28,8 +28,7 @@ export function ChatShell({
   session: Session;
   onActionCompleted?: (actionType?: string) => void;
 }) {
-  const { userRole }   = useSessionStore();
-  const { sidebarOpen } = useUIStore();
+  const { userRole } = useSessionStore();
 
   const [messages,      setMessages]      = useState<Message[]>([]);
   const [progress,      setProgress]      = useState<ProgressStep[]>([]);
@@ -40,17 +39,14 @@ export function ChatShell({
   const abortRef         = useRef<AbortController | null>(null);
   const sendMessageRef   = useRef<(text: string) => void>(() => {});
 
-  // Welcome message on mount
   useEffect(() => {
-    const welcomeQueries = session.sample_queries.slice(0, 3);
     setMessages([{
       id:   "welcome",
       role: "assistant",
-      text: `Hello! I'm your AI analyst for **${session.org_name}**. I can answer questions about your data, spot trends, and ${session.actions_enabled ? "take actions on your behalf" : "provide insights"}.\n\nTry asking me something like:\n${welcomeQueries.map((q: string) => `- *${q}*`).join("\n")}`,
+      text: `Hello! I'm your AI analyst for **${session.org_name}**. I can answer questions about your data, spot trends, and ${session.actions_enabled ? "take actions on your behalf" : "provide insights"}.`,
     }]);
   }, [session]);
 
-  // Stable event listener for suggested followups (uses ref to avoid ordering issues)
   useEffect(() => {
     const handler = (e: Event) => {
       const q = (e as CustomEvent<string>).detail;
@@ -126,16 +122,11 @@ export function ChatShell({
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [streaming, session, userRole]);
 
-  // Keep ref up-to-date so the event listener always calls the latest version
   sendMessageRef.current = sendMessage;
 
   function handleEvent(evt: Record<string, unknown>, asstId: string) {
     const type = evt.type as string;
-
-    if (type === "thread") {
-      threadId.current = evt.thread_id as string;
-    }
-
+    if (type === "thread") { threadId.current = evt.thread_id as string; }
     if (type === "progress") {
       const step = evt.step as ProgressStep;
       setProgress((prev: ProgressStep[]) => {
@@ -144,7 +135,6 @@ export function ChatShell({
         return [...prev, step];
       });
     }
-
     if (type === "result") {
       const result = evt.result as AgentResult;
       threadId.current = result.thread_id ?? threadId.current;
@@ -153,7 +143,6 @@ export function ChatShell({
       );
       setProgress([]);
     }
-
     if (type === "confirmation_required") {
       const result = evt.result as AgentResult;
       threadId.current = result.thread_id ?? threadId.current;
@@ -165,7 +154,6 @@ export function ChatShell({
       );
       setProgress([]);
     }
-
     if (type === "action_result") {
       const result = evt.result as AgentResult;
       setMessages((prev: Message[]) =>
@@ -175,7 +163,6 @@ export function ChatShell({
       setProgress([]);
       onActionCompleted?.((result as AgentResult & { action_type?: string }).action_type);
     }
-
     if (type === "error") {
       setMessages((prev: Message[]) =>
         prev.map((m) =>
@@ -212,28 +199,42 @@ export function ChatShell({
   }
 
   return (
-    <div className="h-screen flex flex-col bg-gray-50 dark:bg-gray-950">
+    <div className="h-full flex flex-col bg-white dark:bg-gray-900">
       <ChatHeader session={session} />
 
-      <div className="flex flex-1 overflow-hidden">
-        {sidebarOpen && (
-          <ChatSidebar session={session} onQueryClick={sendMessage} />
-        )}
-
-        <main className="flex-1 flex flex-col overflow-hidden relative">
-          {progress.some((p: ProgressStep) => p.visible) && (
-            <ProgressBar steps={progress} />
-          )}
-          <AiThread
-            messages={messages}
-            streaming={streaming}
-            pendingAction={pendingAction}
-            suggestions={session.sample_queries}
-            onSend={sendMessage}
-            onConfirm={confirmAction}
-          />
-        </main>
+      {/* Dataset context strip */}
+      <div className="flex items-center gap-3 px-4 py-2 border-b border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-gray-900/60 flex-shrink-0">
+        <span className="text-[11px] font-mono font-semibold text-gray-700 dark:text-gray-200 bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded">
+          {session.schema_name}
+        </span>
+        <span className="text-[11px] text-gray-400">
+          {session.entity_count} entities
+        </span>
+        <span className={cn(
+          "text-[11px] font-medium ml-auto",
+          session.actions_enabled ? "text-green-600 dark:text-green-400" : "text-gray-400"
+        )}>
+          {session.actions_enabled
+            ? `${session.available_actions.length} actions enabled`
+            : "read-only"}
+        </span>
       </div>
+
+      <main className="flex-1 flex flex-col overflow-hidden relative">
+        {progress.some((p: ProgressStep) => p.visible) && (
+          <ProgressBar steps={progress} />
+        )}
+        <AiThread
+          messages={messages}
+          streaming={streaming}
+          pendingAction={pendingAction}
+          suggestions={session.sample_queries}
+          actions={session.available_actions}
+          actionsEnabled={session.actions_enabled}
+          onSend={sendMessage}
+          onConfirm={confirmAction}
+        />
+      </main>
     </div>
   );
 }

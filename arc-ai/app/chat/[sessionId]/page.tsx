@@ -31,23 +31,19 @@ export default function ChatPage() {
 
   return (
     <div className="h-screen flex overflow-hidden bg-white dark:bg-gray-950">
-      {/* Left: System UI panel — only for verticals with defined views */}
+      {/* Left: live data panel — takes all remaining space */}
       {hasSystemViews && (
-        <>
-          <div className="w-[44%] min-w-[340px] max-w-[600px] flex flex-col border-r border-gray-200 dark:border-gray-800 overflow-hidden">
-            <SystemPanel
-              ref={systemRef}
-              session={session}
-            />
-          </div>
-
-          {/* Drag-handle visual divider */}
-          <div className="w-px bg-gray-200 dark:bg-gray-800 flex-shrink-0" />
-        </>
+        <div className="flex-1 min-w-0 flex flex-col overflow-hidden">
+          <SystemPanel ref={systemRef} session={session} />
+        </div>
       )}
 
-      {/* Right: AI chat panel */}
-      <div className="flex-1 flex flex-col overflow-hidden min-w-0">
+      {/* Right: AI assistant panel — fixed width, Supabase-style */}
+      <div className={
+        hasSystemViews
+          ? "w-[440px] flex-shrink-0 flex flex-col overflow-hidden border-l border-gray-200 dark:border-gray-800"
+          : "flex-1 flex flex-col overflow-hidden"
+      }>
         <ChatShell
           session={session}
           onActionCompleted={(actionType) => {
