@@ -2,7 +2,7 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   env: {
-    DEMO_SERVICE_URL: process.env.DEMO_SERVICE_URL || "https://datamind-demo-service.fly.dev",
+    DEMO_SERVICE_URL: process.env.DEMO_SERVICE_URL || "https://demo-service-277663208788.africa-south1.run.app",
   },
   async rewrites() {
     return [

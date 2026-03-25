@@ -64,7 +64,7 @@ export const SystemPanel = forwardRef<SystemPanelHandle, Props>(function SystemP
           headers: { "Content-Type": "application/json" },
           body:    JSON.stringify({ session_id: session.session_id, sql: view.sql }),
         });
-        // On 500, retry once after 2.5s (Fly.io machine may have just woken — pool recovers)
+        // On 500, retry once after 2.5s (Cloud Run instance may have just woken — pool recovers)
         if (r.status === 500) {
           await new Promise((res) => setTimeout(res, 2500));
           return fetch("/api/data", {
